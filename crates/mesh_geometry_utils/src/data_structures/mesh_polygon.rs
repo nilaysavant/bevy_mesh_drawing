@@ -135,8 +135,12 @@ impl MeshPolygon {
     pub fn insert_vertex_on_edge(&mut self, vertex: Vertex, edge: Edge) -> Option<VertexId> {
         let Edge { from, to } = edge;
         // get the from/to idx.
-        let Some(from_idx) = self.vertices.ids().iter().position(|id| id == &from) else { return None; };
-        let Some(to_idx) = self.vertices.ids().iter().position(|id| id == &to) else { return None; };
+        let Some(from_idx) = self.vertices.ids().iter().position(|id| id == &from) else {
+            return None;
+        };
+        let Some(to_idx) = self.vertices.ids().iter().position(|id| id == &to) else {
+            return None;
+        };
         // Get correct idx as order could be reversed
         let length = self.vertices.len();
         let insert_idx =
