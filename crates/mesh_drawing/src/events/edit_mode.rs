@@ -5,11 +5,11 @@ use mesh_geometry_utils::data_structures::Edge;
 #[derive(Debug, Clone)]
 pub enum EditModeEvent {
     /// Triggered when a Mesh entity is selected.
-    /// 
+    ///
     /// `Entity`: Selected polygonal mesh entity.
     PolygonalMeshSelect(Entity),
     /// Triggered when a vertex indicator is just pressed.
-    /// 
+    ///
     /// `Entity`: Vertex indicator entity.
     VertexIndicatorJustPressed(Entity),
     /// Triggered when a vertex indicator is just released.
@@ -21,7 +21,7 @@ pub enum EditModeEvent {
     /// Triggered when a new vertex needs to be inserted at an existing edge.
     VertexInsert(InsertVertexData),
     /// Triggered when an existing vertex needs to be deleted/removed.
-    /// 
+    ///
     /// `Entity`: Vertex indicator entity.
     VertexRemove(Entity),
 }

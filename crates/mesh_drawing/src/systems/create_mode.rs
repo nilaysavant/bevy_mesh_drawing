@@ -28,9 +28,13 @@ pub fn handle_create_mode_events(
     query_indicators: Query<Entity, (With<VertexIndicator>, Without<Cleanup>)>,
     query_edge_indicators: Query<Entity, (With<EdgeIndicator>, Without<Cleanup>)>,
 ) {
-    let Ok((canvas_entity, canvas_transform)) = query_canvas.get_single() else { return; };
+    let Ok((canvas_entity, canvas_transform)) = query_canvas.get_single() else {
+        return;
+    };
     for event in events.iter() {
-        let DrawingMode::CreateMode(create_mode_state) = &mut drawing_state.mode else { return; };
+        let DrawingMode::CreateMode(create_mode_state) = &mut drawing_state.mode else {
+            return;
+        };
         match event {
             CreateModeEvent::VertexAdd(intersection_point) => {
                 let intersection_point =

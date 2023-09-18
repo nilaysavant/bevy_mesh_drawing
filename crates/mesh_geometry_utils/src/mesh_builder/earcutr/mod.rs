@@ -7,7 +7,6 @@ pub mod mesh;
 
 /// Generate/Build Mesh using Earcutr library.
 
-
 /// Generate 3D Mesh using Earcutr.
 ///
 /// Generates a Bevy mesh given the 2D path (of points) and

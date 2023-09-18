@@ -129,8 +129,12 @@ pub fn handle_raycast_intersections(
 ) {
     if mouse_btn_input.just_pressed(MouseButton::Left) {
         // Add new vertex
-        let Ok(intersection) = query.get_single() else { return; };
-        let Some(intersection_point) = intersection.position() else { return; };
+        let Ok(intersection) = query.get_single() else {
+            return;
+        };
+        let Some(intersection_point) = intersection.position() else {
+            return;
+        };
         info!("intersection_point: {:?}", intersection_point);
         create_mode_event.send(CreateModeEvent::VertexAdd(*intersection_point));
     } else if mouse_btn_input.just_pressed(MouseButton::Right) {
@@ -152,7 +156,9 @@ pub fn handle_vertex_grabbing_raycast_intersections(
     >,
     query_canvas: Query<&Transform, With<Canvas>>,
 ) {
-    let Ok(canvas_transform) = query_canvas.get_single() else { return; };
+    let Ok(canvas_transform) = query_canvas.get_single() else {
+        return;
+    };
     let mut intersections_pos_dist = vec![];
     for intersections in query_intersections.iter() {
         if let (Some(distance), Some(position)) =
@@ -174,7 +180,9 @@ pub fn handle_vertex_grabbing_raycast_intersections(
             }
         }
     }
-    let Some(closest_entity) = closest_entity else { return; };
+    let Some(closest_entity) = closest_entity else {
+        return;
+    };
     if mouse_btn_input.just_pressed(MouseButton::Left) {
         edit_mode_event.send(EditModeEvent::VertexIndicatorJustPressed(closest_entity));
     } else if mouse_btn_input.just_released(MouseButton::Left) {

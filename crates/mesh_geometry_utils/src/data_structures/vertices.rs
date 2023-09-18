@@ -76,12 +76,12 @@ impl Vertices {
             pub fn is_empty(&self) -> bool;
 
             /// Push new vertex at the end.
-            /// 
+            ///
             /// Returns the pushed vertex's id.
             pub fn push(&mut self, vertex: Vertex) -> VertexId;
 
             /// Push new vertices at the end.
-            /// 
+            ///
             /// Returns the pushed vertices' ids.
             pub fn push_many(&mut self, vertices_vec: Vec<Vertex>) -> Vec<VertexId>;
 

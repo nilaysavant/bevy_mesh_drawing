@@ -34,9 +34,13 @@ pub fn handle_edit_mode_events(
         (With<PickableMesh>, Without<PolygonalMeshIndicators>),
     >,
 ) {
-    let Ok((canvas_entity, canvas_transform)) = query_canvas.get_single() else { return; };
+    let Ok((canvas_entity, canvas_transform)) = query_canvas.get_single() else {
+        return;
+    };
     for event in events.iter() {
-        let DrawingMode::EditMode(edit_mode_state) = &mut drawing_state.mode else { return; };
+        let DrawingMode::EditMode(edit_mode_state) = &mut drawing_state.mode else {
+            return;
+        };
         match event {
             EditModeEvent::PolygonalMeshSelect(entity) => {
                 // cleanup existing...
@@ -139,13 +143,22 @@ pub fn handle_edit_mode_events(
                 drawing_state.mode = DrawingMode::CreateMode(CreateModeState::default());
             }
             EditModeEvent::VertexInsert(InsertVertexData { edge, translation }) => {
-                let Some(active_mesh) = edit_mode_state.active_mesh else { continue; };
+                let Some(active_mesh) = edit_mode_state.active_mesh else {
+                    continue;
+                };
                 let mut query_mesh_with_indicators = query_mesh_indicators_set.p1();
-                let Ok((mut polygonal_mesh, mut polygonal_mesh_indicators)) = query_mesh_with_indicators.get_mut(active_mesh) else { continue; };
+                let Ok((mut polygonal_mesh, mut polygonal_mesh_indicators)) =
+                    query_mesh_with_indicators.get_mut(active_mesh)
+                else {
+                    continue;
+                };
                 // insert vertex in MeshPolygon ds
                 let Some(vertex_id) = polygonal_mesh
                     .mesh_polygon
-                    .insert_vertex_on_edge(translation.xz(), edge.clone()) else { continue; };
+                    .insert_vertex_on_edge(translation.xz(), edge.clone())
+                else {
+                    continue;
+                };
                 // cleanup existing edge indicator
                 for (entity, indicator) in query_edge_indicators.iter() {
                     if indicator.0 == edge.clone() {
@@ -196,7 +209,10 @@ pub fn handle_edit_mode_events(
                     }
                 }
                 // regenerate mesh and assign it to existing...
-                let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else { error!("Could not extrude mesh!"); return; };
+                let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else {
+                    error!("Could not extrude mesh!");
+                    return;
+                };
                 if let Some(mesh_handle) = polygonal_mesh.mesh_handle.clone() {
                     if let Some(mesh) = meshes.get_mut(&mesh_handle) {
                         info!("Generating new mesh...");
@@ -206,17 +222,29 @@ pub fn handle_edit_mode_events(
             }
             EditModeEvent::VertexRemove(entity) => {
                 // get vertex id
-                let Ok((_, VertexIndicator(vertex_id))) = query_vertex_indicators.get(*entity) else { continue; };
+                let Ok((_, VertexIndicator(vertex_id))) = query_vertex_indicators.get(*entity)
+                else {
+                    continue;
+                };
                 // get mut polygonal mesh & indicators components for active mesh...
-                let Some(active_mesh) = edit_mode_state.active_mesh else { continue; };
+                let Some(active_mesh) = edit_mode_state.active_mesh else {
+                    continue;
+                };
                 let mut query_mesh_with_indicators = query_mesh_indicators_set.p1();
-                let Ok((mut polygonal_mesh, mut polygonal_mesh_indicators)) = query_mesh_with_indicators.get_mut(active_mesh) else { continue; };
+                let Ok((mut polygonal_mesh, mut polygonal_mesh_indicators)) =
+                    query_mesh_with_indicators.get_mut(active_mesh)
+                else {
+                    continue;
+                };
                 if polygonal_mesh.mesh_polygon.vertices.len() <= 3 {
                     error!("Cannot remove vertices! vertices are less than or equal to 3!");
                     continue;
                 }
                 // remove the vertex from MeshPolygon ds
-                let (Some(_), added_edges) = polygonal_mesh.mesh_polygon.remove_vertex(*vertex_id) else { continue; };
+                let (Some(_), added_edges) = polygonal_mesh.mesh_polygon.remove_vertex(*vertex_id)
+                else {
+                    continue;
+                };
                 // cleanup connected edge indicators...
                 for (entity, EdgeIndicator(Edge { from, to })) in query_edge_indicators.iter() {
                     if from == vertex_id || to == vertex_id {
@@ -252,7 +280,10 @@ pub fn handle_edit_mode_events(
                     }
                 }
                 // regenerate mesh and assign it to existing...
-                let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else { error!("Could not extrude mesh!"); return; };
+                let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else {
+                    error!("Could not extrude mesh!");
+                    return;
+                };
                 if let Some(mesh_handle) = polygonal_mesh.mesh_handle.clone() {
                     if let Some(mesh) = meshes.get_mut(&mesh_handle) {
                         info!("Generating new mesh...");
@@ -311,19 +342,24 @@ pub fn handle_active_indicator(
     } else {
         return;
     };
-    let Ok((transform, VertexIndicator(vertex_id)))= query_moved_indicators.get(active_vertex_indicator) else {
-            return;
-        };
+    let Ok((transform, VertexIndicator(vertex_id))) =
+        query_moved_indicators.get(active_vertex_indicator)
+    else {
+        return;
+    };
     let Ok(mut polygonal_mesh) = query_with_indicators.get_mut(active_mesh) else {
-            return;
-        };
+        return;
+    };
     if let Some(vertex) = polygonal_mesh.mesh_polygon.vertices.get_mut(*vertex_id) {
         // Manipulate vertex in path 2d...
         vertex.x = transform.translation.x;
         // since y is vertical we use z...
         vertex.y = transform.translation.z;
         // regenerate mesh and assign it to existing...
-        let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else { error!("Could not extrude mesh!"); return; };
+        let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else {
+            error!("Could not extrude mesh!");
+            return;
+        };
         if let Some(mesh_handle) = polygonal_mesh.mesh_handle.clone() {
             if let Some(mesh) = meshes.get_mut(&mesh_handle) {
                 info!("Generating new mesh...");

@@ -28,7 +28,9 @@ pub fn handle_picker_events(
     query_vertex_indicators: Query<&VertexIndicator>,
     query_edge_indicators: Query<&EdgeIndicator>,
 ) {
-    let Ok(canvas_transform) = query_canvas.get_single() else { return; };
+    let Ok(canvas_transform) = query_canvas.get_single() else {
+        return;
+    };
     for event in events.iter() {
         match event {
             PickingEvent::Selection(e) => match e {
@@ -58,13 +60,19 @@ pub fn handle_picker_events(
                         edit_mode_event.send(EditModeEvent::VertexRemove(*entity));
                     }
                 } else if query_edge_indicators.contains(*entity) {
-                    let Ok(EdgeIndicator(edge))  = query_edge_indicators.get(*entity) else { continue; };
+                    let Ok(EdgeIndicator(edge)) = query_edge_indicators.get(*entity) else {
+                        continue;
+                    };
                     // if edge indicator is clicked
                     if plugin_settings.is_edit_mode_insert_vertex_enabled
                         && keyboard_input.pressed(KeyCode::LControl)
                     {
-                        let Ok(intersection) = query_intersections.get_single() else { continue; };
-                        let Some(intersection_pos) = intersection.position() else { continue; };
+                        let Ok(intersection) = query_intersections.get_single() else {
+                            continue;
+                        };
+                        let Some(intersection_pos) = intersection.position() else {
+                            continue;
+                        };
                         let intersection_pos =
                             get_canvas_corrected_translation(*intersection_pos, canvas_transform);
                         edit_mode_event.send(EditModeEvent::VertexInsert(InsertVertexData {

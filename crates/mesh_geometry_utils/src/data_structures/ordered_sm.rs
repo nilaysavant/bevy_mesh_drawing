@@ -119,7 +119,9 @@ where
     ///
     /// Returns removed item.
     pub fn remove(&mut self, id: ItemId) -> Option<Item> {
-        let Some(item) = self.sm.remove(id) else { return None; };
+        let Some(item) = self.sm.remove(id) else {
+            return None;
+        };
         if let Some(index) = self.ids.iter().position(|tmp_id| *tmp_id == id) {
             self.ids.remove(index);
         }
@@ -200,25 +202,33 @@ where
 
     /// Get first item.
     pub fn first(&self) -> Option<&Item> {
-        let Some(id) = self.ids.first() else { return None; };
+        let Some(id) = self.ids.first() else {
+            return None;
+        };
         self.sm.get(*id)
     }
 
     /// Get first item mutably.
     pub fn first_mut(&mut self) -> Option<&mut Item> {
-        let Some(id) = self.ids.first() else { return None; };
+        let Some(id) = self.ids.first() else {
+            return None;
+        };
         self.sm.get_mut(*id)
     }
 
     /// Get last item.
     pub fn last(&self) -> Option<&Item> {
-        let Some(id) = self.ids.last() else { return None; };
+        let Some(id) = self.ids.last() else {
+            return None;
+        };
         self.sm.get(*id)
     }
 
     /// Get last item mutably.
     pub fn last_mut(&mut self) -> Option<&mut Item> {
-        let Some(id) = self.ids.last() else { return None; };
+        let Some(id) = self.ids.last() else {
+            return None;
+        };
         self.sm.get_mut(*id)
     }
 
@@ -284,7 +294,9 @@ where
     type Item = &'a Item;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let Some(id) = self.ordered_sm.ids.get(self.current_index) else { return None; };
+        let Some(id) = self.ordered_sm.ids.get(self.current_index) else {
+            return None;
+        };
         self.current_index += 1;
         self.ordered_sm.get(*id)
     }
@@ -323,9 +335,13 @@ where
     type Item = (ItemId, &'a Item);
 
     fn next(&mut self) -> Option<Self::Item> {
-        let Some(id) = self.ordered_sm.ids.get(self.current_index) else { return None; };
+        let Some(id) = self.ordered_sm.ids.get(self.current_index) else {
+            return None;
+        };
         self.current_index += 1;
-        let Some(item) = self.ordered_sm.get(*id) else { return None; };
+        let Some(item) = self.ordered_sm.get(*id) else {
+            return None;
+        };
         Some((*id, item))
     }
 }

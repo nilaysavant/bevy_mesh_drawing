@@ -1,6 +1,9 @@
 use std::convert::TryFrom;
 
-use bevy::{prelude::Mesh, render::{render_resource::PrimitiveTopology, mesh::Indices}};
+use bevy::{
+    prelude::Mesh,
+    render::{mesh::Indices, render_resource::PrimitiveTopology},
+};
 
 type EarcutrIndices = Vec<usize>;
 type EarcutrVertices = Vec<f64>;
