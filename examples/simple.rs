@@ -1,3 +1,10 @@
+//! Simple Example
+//!
+//! KeyBinds are currently hardcoded:
+//!
+//! `Key1`: For Edit Mode (Allows editing existing meshes created with this plugin)
+//! `Key2`: For Create Mode (Allows creating new meshes created with this plugin)
+
 use bevy::{
     prelude::*,
     render::settings::{WgpuFeatures, WgpuSettings},
