@@ -1,7 +1,23 @@
+[package]
+name = "bevy_mesh_drawing"
+version = "0.1.0-dev"
+authors = ["Nilay Savant"]
+edition = "2021"
+categories = ["bevy", "mesh", "drawing", "graphics"]
+description = "Bevy Plugin to draw polygonal meshes"
+exclude = ["assets/", ".github/", "crates/"]
+keywords = ["bevy", "mesh", "drawing", "gamedev", "graphics"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+
+[dependencies]
+mesh_drawing = { path = "crates/mesh_drawing" }
+
+[dev-dependencies]
+bevy = { version = "0.8" }
 
 [workspace]
 members = ["crates/*"]
-resolver = "2"         # Important! wgpu/Bevy needs this!
 
 # Enable a small amount of optimization in debug mode
 [profile.dev]
