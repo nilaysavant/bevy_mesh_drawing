@@ -3,12 +3,15 @@ name = "mesh_geometry_utils"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = []
+bevy_prototype_lyon = ["dep:bevy_prototype_lyon"] # unused atm
+
 
 [dependencies]
 delegate = "0.9.0"
 bevy = { version = "0.8", features = [] }
-bevy_prototype_lyon = "0.6"
+bevy_prototype_lyon = { version = "0.6", optional = true }
 geo = "0.23"
 earcutr = "0.4"
 serial_int = "2.0.0"
