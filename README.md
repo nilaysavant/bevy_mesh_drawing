@@ -1,5 +1,5 @@
 # Bevy Mesh Drawing
 
-**[Experimental ⚠️]** Mesh drawing plugin for [Bevy Engine][Bevy Engine Website].
+**[Experimental ⚠️]** [Bevy][Bevy Engine Website] Plugin to draw polygonal meshes.
 
 [Bevy Engine Website]: https://bevyengine.org/
