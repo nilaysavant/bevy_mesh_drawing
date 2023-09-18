@@ -1,6 +1,6 @@
 [package]
 name = "bevy_mesh_drawing"
-version = "0.1.0-dev"
+version = "0.1.0"
 authors = ["Nilay Savant"]
 edition = "2021"
 categories = ["bevy", "mesh", "drawing", "graphics"]
