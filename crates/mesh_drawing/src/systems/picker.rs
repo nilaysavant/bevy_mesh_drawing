@@ -1,10 +1,13 @@
 use bevy::prelude::*;
-use bevy_mod_picking::prelude::{Click, Pickable, Pointer};
-use bevy_mod_raycast::{prelude::Raycast, RaycastSource};
+use bevy_mod_picking::prelude::{Click, On, Pickable, Pointer, RaycastPickTarget};
+use bevy_mod_raycast::RaycastSource;
 
 use crate::{
     components::{Canvas, EdgeIndicator, PolygonalMesh, PolygonalMeshIndicators, VertexIndicator},
-    events::edit_mode::{EditModeEvent, InsertVertexData},
+    events::{
+        edit_mode::{EditModeEvent, InsertVertexData},
+        picker::PickerClickEvent,
+    },
     resources::PluginSettings,
     systems::raycast::get_first_intersection_data_for_source,
     utils::canvas_correction::get_canvas_corrected_translation,
@@ -12,11 +15,40 @@ use crate::{
 
 use super::raycast::MeshDrawingRaycastSet;
 
+/// Configure relevant entities to fire click event
+pub fn add_picker_click_event_to_pickable(
+    mut commands: Commands,
+    query: Query<Entity, Added<Pickable>>,
+) {
+    for entity in query.iter() {
+        info!("Add event to ent {:?}", entity);
+        commands.entity(entity).insert((
+            RaycastPickTarget::default(),
+            On::<Pointer<Click>>::send_event::<PickerClickEvent>(),
+        ));
+    }
+}
+
+pub fn remove_picker_click_event_from_prev_pickable(
+    mut commands: Commands,
+    mut query: RemovedComponents<Pickable>,
+) {
+    for entity in query.iter() {
+        info!("Remove event from ent {:?}", entity);
+        let Some(mut ent_commands) = commands.get_entity(entity) else {
+            continue;
+        };
+        ent_commands
+            .remove::<RaycastPickTarget>()
+            .remove::<On<Pointer<Click>>>();
+    }
+}
+
 /// Handle's the mod/entity picker events.
 #[allow(clippy::too_many_arguments)]
 pub fn handle_picker_events(
     keyboard_input: Res<Input<KeyCode>>,
-    mut events: EventReader<Pointer<Click>>,
+    mut events: EventReader<PickerClickEvent>,
     mut edit_mode_event: EventWriter<EditModeEvent>,
     plugin_settings: Res<PluginSettings>,
     query_canvas: Query<&Transform, With<Canvas>>,
@@ -33,7 +65,7 @@ pub fn handle_picker_events(
         return;
     };
     for event in events.iter() {
-        let entity = event.target;
+        let entity = event.0;
         info!("Clicked entity: {:?}", entity);
         if query_canvas.contains(entity) {
             // if canvas is clicked cleanup every thing

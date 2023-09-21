@@ -1,5 +1,5 @@
 use bevy::{prelude::*, reflect::TypePath};
-use bevy_mod_picking::prelude::{Highlight, PickableBundle};
+use bevy_mod_picking::prelude::{Highlight, PickableBundle, RaycastPickCamera};
 use bevy_mod_raycast::{
     prelude::{Raycast, RaycastMesh, RaycastMethod, RaycastPluginState, RaycastSource},
     IntersectionData,
@@ -97,7 +97,8 @@ pub fn enable_raycast_on_camera_add(
         commands
             .entity(entity)
             .insert(RaycastSource::<MeshDrawingRaycastSet>::new())
-            .insert(RaycastSource::<VertexGrabbingRaycastSet>::new());
+            .insert(RaycastSource::<VertexGrabbingRaycastSet>::new())
+            .insert(RaycastPickCamera::default());
     }
 }
 
@@ -109,7 +110,8 @@ pub fn disable_raycast_on_camera_remove(
         commands
             .entity(entity)
             .remove::<RaycastSource<MeshDrawingRaycastSet>>()
-            .remove::<RaycastSource<VertexGrabbingRaycastSet>>();
+            .remove::<RaycastSource<VertexGrabbingRaycastSet>>()
+            .remove::<RaycastPickCamera>();
     }
 }
 
