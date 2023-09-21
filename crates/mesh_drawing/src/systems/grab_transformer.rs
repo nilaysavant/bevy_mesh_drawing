@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy_mod_raycast::Intersection;
+use bevy_mod_raycast::prelude::RaycastSource;
 
 use crate::{
     components::{Canvas, GrabTransformable},
@@ -7,12 +7,12 @@ use crate::{
     utils::canvas_correction::get_canvas_corrected_translation,
 };
 
-use super::raycast::MeshDrawingRaycastSet;
+use super::raycast::{get_first_intersection_data_for_source, MeshDrawingRaycastSet};
 
 pub fn handle_vertex_indicator_grab(
     drawing_state: Res<DrawingState>,
     mut query_indicators: Query<&mut Transform, (With<GrabTransformable>, Without<Canvas>)>,
-    query_intersections: Query<&Intersection<MeshDrawingRaycastSet>>,
+    query_intersections: Query<&RaycastSource<MeshDrawingRaycastSet>>,
     query_canvas: Query<&Transform, With<Canvas>>,
 ) {
     let DrawingMode::EditMode(EditModeState {
@@ -28,10 +28,12 @@ pub fn handle_vertex_indicator_grab(
     let Ok(mut transform) = query_indicators.get_mut(active_vertex_indicator) else {
         return;
     };
-    for intersection in query_intersections.iter() {
-        if let Some(position) = intersection.position() {
-            let position = get_canvas_corrected_translation(*position, canvas_transform);
-            transform.translation = position;
-        }
+    for source in query_intersections.iter() {
+        let Some((_, intersection)) = get_first_intersection_data_for_source(&query_intersections)
+        else {
+            continue;
+        };
+        let position = get_canvas_corrected_translation(intersection.position(), canvas_transform);
+        transform.translation = position;
     }
 }

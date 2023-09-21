@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy_mod_picking::{Highlighting, PickableBundle};
+use bevy_mod_picking::prelude::{Highlight, PickableBundle};
 
 /// Spawns a vertex indicator at the given vertex.
 pub fn spawn_vertex_indicators(
@@ -8,28 +8,26 @@ pub fn spawn_vertex_indicators(
     meshes: &mut ResMut<Assets<Mesh>>,
     materials: &mut ResMut<Assets<StandardMaterial>>,
 ) -> Entity {
-    let material = materials.add(StandardMaterial {
+    let material = StandardMaterial {
         unlit: true,
         base_color: Color::WHITE,
         ..default()
-    });
+    };
+    let material_hdl = materials.add(material);
     commands
-        .spawn_bundle(MaterialMeshBundle {
-            mesh: meshes.add(Mesh::from(shape::Icosphere {
-                radius: 0.1,
-                ..default()
-            })),
-            material: material.clone(),
+        .spawn(MaterialMeshBundle {
+            mesh: meshes.add(
+                Mesh::try_from(shape::Icosphere {
+                    radius: 0.1,
+                    ..default()
+                })
+                .unwrap(),
+            ),
+            material: material_hdl.clone(),
             transform: Transform::from_translation(Vec3::new(vertex.x, 0., vertex.y)),
             ..default()
         })
-        .insert_bundle(PickableBundle::default())
-        .insert(Highlighting {
-            initial: material.clone(),
-            hovered: Some(material.clone()),
-            pressed: Some(material.clone()),
-            selected: Some(material.clone()),
-        })
+        .insert(PickableBundle::default())
         .id()
 }
 
@@ -55,7 +53,7 @@ pub fn spawn_edge_indicator(
     });
     // Spawn the edge
     commands
-        .spawn_bundle(MaterialMeshBundle {
+        .spawn(MaterialMeshBundle {
             mesh: meshes.add(Mesh::from(shape::Box::default())),
             material: materials.add(StandardMaterial {
                 unlit: true,
@@ -73,12 +71,6 @@ pub fn spawn_edge_indicator(
             },
             ..default()
         })
-        .insert_bundle(PickableBundle::default())
-        .insert(Highlighting {
-            initial: material.clone(),
-            hovered: Some(material.clone()),
-            pressed: Some(material.clone()),
-            selected: Some(material.clone()),
-        })
+        .insert(PickableBundle::default())
         .id()
 }

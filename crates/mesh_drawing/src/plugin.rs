@@ -1,7 +1,6 @@
 use bevy::prelude::*;
 use bevy_mod_picking::DefaultPickingPlugins;
 use bevy_mod_raycast::{DefaultRaycastingPlugin, RaycastSystem};
-use iyes_loopless::prelude::*;
 
 use crate::{
     events::{create_mode::CreateModeEvent, edit_mode::EditModeEvent},
@@ -35,7 +34,6 @@ impl Plugin for MeshDrawingPlugin {
     fn build(&self, app: &mut App) {
         app // plugin app
             // Set default/init plugin state
-            .add_loopless_state(PluginState::default())
             // Plugin settings
             .insert_resource(PluginSettings::default())
             .add_plugins(DefaultPickingPlugins)
@@ -45,73 +43,85 @@ impl Plugin for MeshDrawingPlugin {
             .add_event::<EditModeEvent>()
             .add_event::<CreateModeEvent>()
             // Ray-cast stuff...
-            .add_plugin(DefaultRaycastingPlugin::<MeshDrawingRaycastSet>::default())
-            .add_plugin(DefaultRaycastingPlugin::<VertexGrabbingRaycastSet>::default())
+            .add_plugins(DefaultRaycastingPlugin::<MeshDrawingRaycastSet>::default())
+            .add_plugins(DefaultRaycastingPlugin::<VertexGrabbingRaycastSet>::default())
+            // add state
+            .add_state::<PluginState>()
             // Setup updating ray-cast with cursor. Needs to run first.
-            .add_system_to_stage(
-                CoreStage::First,
+            .add_systems(
+                First,
                 update_raycast_with_cursor
-                    .run_in_state(PluginState::Initialized)
+                    .run_if(in_state(PluginState::Initialized))
                     .before(RaycastSystem::BuildRays::<MeshDrawingRaycastSet>)
                     .before(RaycastSystem::BuildRays::<VertexGrabbingRaycastSet>),
             )
-            .add_system(enable_raycast_on_canvas_add)
-            .add_system(disable_raycast_on_canvas_remove)
-            .add_system(enable_raycast_on_vertex_indicators_add.run_if(is_running_in_edit_mode))
-            .add_system(enable_raycast_on_camera_add)
-            .add_system(disable_raycast_on_camera_remove)
-            .add_startup_system(setup_raycast)
-            .add_system(
+            .add_systems(Update, enable_raycast_on_canvas_add)
+            .add_systems(Update, disable_raycast_on_canvas_remove)
+            .add_systems(
+                Update,
+                enable_raycast_on_vertex_indicators_add.run_if(is_running_in_edit_mode),
+            )
+            .add_systems(Update, enable_raycast_on_camera_add)
+            .add_systems(Update, disable_raycast_on_camera_remove)
+            .add_systems(Startup, setup_raycast)
+            .add_systems(
+                Update,
                 handle_raycast_intersections
-                    .run_in_state(PluginState::Initialized)
+                    .run_if(in_state(PluginState::Initialized))
                     .run_if(is_running_in_create_mode),
             )
-            .add_system(
+            .add_systems(
+                Update,
                 handle_vertex_grabbing_raycast_intersections
-                    .run_in_state(PluginState::Initialized)
+                    .run_if(in_state(PluginState::Initialized))
                     .run_if(is_running_in_edit_mode),
             )
             // grab transformer
-            .add_system(
+            .add_systems(
+                Update,
                 handle_vertex_indicator_grab
-                    .run_in_state(PluginState::Initialized)
+                    .run_if(in_state(PluginState::Initialized))
                     .run_if(is_running_in_edit_mode),
             )
             // State transition
-            .add_system(initialize_plugin_if_ready)
+            .add_systems(Update, initialize_plugin_if_ready)
             // Picker stuff...
-            .add_system_to_stage(
-                CoreStage::PostUpdate,
-                handle_picker_events.run_in_state(PluginState::Initialized),
+            .add_systems(
+                PostUpdate,
+                handle_picker_events.run_if(in_state(PluginState::Initialized)),
             )
             // edit mode stuff..
-            .add_system_to_stage(
-                CoreStage::First,
+            .add_systems(
+                First,
                 handle_edit_mode_events
-                    .run_in_state(PluginState::Initialized)
+                    .run_if(in_state(PluginState::Initialized))
                     .run_if(is_running_in_edit_mode),
             )
-            .add_system(
+            .add_systems(
+                Update,
                 handle_active_indicator
-                    .run_in_state(PluginState::Initialized)
+                    .run_if(in_state(PluginState::Initialized))
                     .run_if(is_running_in_edit_mode),
             )
             // create mode stuff...
-            .add_system_to_stage(
-                CoreStage::First,
+            .add_systems(
+                First,
                 handle_create_mode_events
-                    .run_in_state(PluginState::Initialized)
+                    .run_if(in_state(PluginState::Initialized))
                     .run_if(is_running_in_create_mode),
             )
             // drawing mode transition...
-            .add_system(handle_drawing_mode_transition.run_in_state(PluginState::Initialized))
+            .add_systems(
+                Update,
+                handle_drawing_mode_transition.run_if(in_state(PluginState::Initialized)),
+            )
             // cleanup stuff...
-            .add_system_to_stage(CoreStage::Last, cleanup_all)
+            .add_systems(Last, cleanup_all)
             // debug stuff...
-            .add_system_to_stage(
-                CoreStage::First,
+            .add_systems(
+                First,
                 debug_edit_mode_events
-                    .run_in_state(PluginState::Initialized)
+                    .run_if(in_state(PluginState::Initialized))
                     .run_if(is_running_in_edit_mode),
             );
     }

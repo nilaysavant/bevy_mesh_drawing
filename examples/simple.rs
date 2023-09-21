@@ -5,33 +5,28 @@
 //! `Key1`: For Edit Mode (Allows editing existing meshes created with this plugin)
 //! `Key2`: For Create Mode (Allows creating new meshes created with this plugin)
 
-use bevy::{
-    prelude::*,
-    render::settings::{WgpuFeatures, WgpuSettings},
-};
+use bevy::prelude::*;
 use bevy_mesh_drawing::prelude::{Canvas, MeshDrawingCamera, MeshDrawingPlugin, PolygonalMesh};
 
 pub fn main() {
     App::new() // App
         .add_plugins(DefaultPlugins)
-        .insert_resource(WgpuSettings {
-            features: WgpuFeatures::POLYGON_MODE_LINE,
-            ..default()
-        })
-        .add_startup_system(setup_window)
+        .add_plugins(MeshDrawingPlugin)
         .insert_resource(ClearColor(Color::rgb(0.0, 0.0, 0.0)))
-        .add_startup_system(setup)
-        .add_system(handle_polygonal_mesh_add)
-        .add_plugin(MeshDrawingPlugin)
+        .add_systems(Startup, setup_window)
+        .add_systems(Startup, setup)
+        .add_systems(Update, handle_polygonal_mesh_add)
         .run();
 }
 
 /// # Setup Window
 ///
 /// System updates and sets up the window attributes
-pub fn setup_window(mut windows: ResMut<Windows>) {
-    let window = windows.primary_mut();
-    window.set_title("simple mesh drawing".to_string());
+pub fn setup_window(mut windows: Query<&mut Window>) {
+    let Ok(mut window) = windows.get_single_mut() else {
+        return;
+    };
+    window.title = "simple mesh drawing".to_string();
 }
 
 /// Setup scene.
@@ -44,8 +39,11 @@ pub fn setup(
 ) {
     // Ground canvas
     commands
-        .spawn_bundle(PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Plane { size: 20.0 })),
+        .spawn(PbrBundle {
+            mesh: meshes.add(Mesh::from(shape::Plane {
+                size: 20.0,
+                ..default()
+            })),
             material: materials.add(Color::rgba(0.3, 0.5, 0.3, 1.0).into()),
             transform: Transform {
                 translation: Vec3::new(0., 0., 0.),
@@ -58,7 +56,7 @@ pub fn setup(
         .insert(Name::new("Ground Canvas"));
     // light
     commands
-        .spawn_bundle(PointLightBundle {
+        .spawn(PointLightBundle {
             point_light: PointLight {
                 intensity: 1500.0,
                 shadows_enabled: true,
@@ -70,7 +68,7 @@ pub fn setup(
         .insert(Name::new("Light"));
     // camera
     commands
-        .spawn_bundle(Camera3dBundle {
+        .spawn(Camera3dBundle {
             transform: Transform::from_translation(Vec3::splat(10.))
                 .looking_at(Vec3::ZERO, Vec3::Y),
             ..default()

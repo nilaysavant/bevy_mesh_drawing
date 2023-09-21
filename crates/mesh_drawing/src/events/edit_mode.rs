@@ -1,8 +1,8 @@
-use bevy::prelude::{Entity, Vec3};
+use bevy::prelude::{Entity, Vec3, Event};
 use mesh_geometry_utils::data_structures::Edge;
 
 /// Edit Mode Event enum.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Event)]
 pub enum EditModeEvent {
     /// Triggered when a Mesh entity is selected.
     ///

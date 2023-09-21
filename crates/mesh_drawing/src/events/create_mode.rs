@@ -1,7 +1,7 @@
-use bevy::prelude::{Entity, Vec3};
+use bevy::prelude::{Event, Vec3};
 
 /// Create Mode Event enum.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Event)]
 pub enum CreateModeEvent {
     /// Triggered when a vertex needs to be added to active `MeshPolygon`.
     VertexAdd(Vec3),

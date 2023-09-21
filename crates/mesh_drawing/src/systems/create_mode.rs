@@ -1,5 +1,5 @@
 use bevy::{math::Vec3Swizzles, prelude::*};
-use bevy_mod_picking::{Highlighting, PickableBundle};
+use bevy_mod_picking::prelude::{Highlight, PickableBundle};
 use mesh_geometry_utils::data_structures::Edge;
 
 use crate::{
@@ -167,20 +167,14 @@ fn close_polygon_and_extrude_mesh(
     };
     let manual_mesh_material = materials.add(Color::rgba(0.8, 0.7, 0.6, 1.0).into());
     let new_mesh_entity = commands
-        .spawn_bundle(MaterialMeshBundle {
+        .spawn(MaterialMeshBundle {
             mesh: mesh_handle,
             material: manual_mesh_material.clone(),
             transform: Transform::from_translation(Vec3::ZERO),
             ..default()
         })
         .insert(polygonal_mesh)
-        .insert(Highlighting {
-            initial: manual_mesh_material.clone(),
-            hovered: Some(manual_mesh_material.clone()),
-            pressed: Some(manual_mesh_material.clone()),
-            selected: Some(manual_mesh_material.clone()),
-        })
-        .insert_bundle(PickableBundle::default())
+        .insert(PickableBundle::default())
         .id();
     // add new mesh as child of canvas
     commands.entity(canvas_entity).add_child(new_mesh_entity);

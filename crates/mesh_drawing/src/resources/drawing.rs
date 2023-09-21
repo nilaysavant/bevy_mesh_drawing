@@ -1,8 +1,8 @@
-use bevy::prelude::Entity;
+use bevy::prelude::{Entity, Resource};
 use mesh_geometry_utils::data_structures::MeshPolygon;
 
 /// State of the drawing.
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, Resource)]
 pub struct DrawingState {
     /// Mod of drawing.
     pub mode: DrawingMode,

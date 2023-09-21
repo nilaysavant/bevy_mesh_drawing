@@ -1,20 +1,17 @@
+use bevy::prelude::*;
+
 /// State of the plugin.
-#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord, Hash, Default, States)]
 pub enum PluginState {
     /// Before init.
+    #[default]
     UnInitialized,
     /// After init.
     Initialized,
 }
 
-impl Default for PluginState {
-    fn default() -> Self {
-        Self::UnInitialized
-    }
-}
-
 /// Settings to configure the plugin.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Resource)]
 pub struct PluginSettings {
     /// Enable insert vertex functionality in edit mode.
     pub is_edit_mode_insert_vertex_enabled: bool,

@@ -1,5 +1,5 @@
 use bevy::{math::Vec3Swizzles, prelude::*};
-use bevy_mod_picking::PickableMesh;
+use bevy_mod_picking::prelude::Pickable;
 use mesh_geometry_utils::data_structures::Edge;
 
 use crate::{
@@ -26,12 +26,12 @@ pub fn handle_edit_mode_events(
     query_vertex_indicators: Query<(Entity, &VertexIndicator)>,
     query_edge_indicators: Query<(Entity, &EdgeIndicator)>,
     mut query_mesh_indicators_set: ParamSet<(
-        Query<(Entity, &PolygonalMeshIndicators), With<PickableMesh>>,
-        Query<(&mut PolygonalMesh, &mut PolygonalMeshIndicators), With<PickableMesh>>,
+        Query<(Entity, &PolygonalMeshIndicators), With<Pickable>>,
+        Query<(&mut PolygonalMesh, &mut PolygonalMeshIndicators), With<Pickable>>,
     )>,
     query_mesh_without_indicators: Query<
         &PolygonalMesh,
-        (With<PickableMesh>, Without<PolygonalMeshIndicators>),
+        (With<Pickable>, Without<PolygonalMeshIndicators>),
     >,
 ) {
     let Ok((canvas_entity, canvas_transform)) = query_canvas.get_single() else {
@@ -299,10 +299,7 @@ pub fn handle_edit_mode_events(
 fn cleanup_edit_mode_entities_and_reset(
     commands: &mut Commands,
     edit_mode_state: &mut EditModeState,
-    query_mesh_w_indicators_for_cleanup: &Query<
-        (Entity, &PolygonalMeshIndicators),
-        With<PickableMesh>,
-    >,
+    query_mesh_w_indicators_for_cleanup: &Query<(Entity, &PolygonalMeshIndicators), With<Pickable>>,
 ) {
     for (entity, PolygonalMeshIndicators { vertices, edges }) in
         query_mesh_w_indicators_for_cleanup.iter()
@@ -327,7 +324,7 @@ pub fn handle_active_indicator(
     query_moved_indicators: Query<(&Transform, &VertexIndicator), Changed<Transform>>,
     mut query_with_indicators: Query<
         &mut PolygonalMesh,
-        (With<PickableMesh>, Without<VertexIndicator>),
+        (With<Pickable>, Without<VertexIndicator>),
     >,
     mut query_edge_indicators: Query<(&mut Transform, &EdgeIndicator), Without<VertexIndicator>>,
     drawing_state: Res<DrawingState>,

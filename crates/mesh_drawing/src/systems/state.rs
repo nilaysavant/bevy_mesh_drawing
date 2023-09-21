@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use iyes_loopless::state::{CurrentState, NextState};
 
 use crate::{
     components::{Canvas, MeshDrawingCamera},
@@ -8,13 +7,16 @@ use crate::{
 
 pub fn initialize_plugin_if_ready(
     mut commands: Commands,
-    state: Res<CurrentState<PluginState>>,
+    state: Res<State<PluginState>>,
+    mut next_state: ResMut<NextState<PluginState>>,
     query_canvas: Query<With<Canvas>>,
     query_camera: Query<With<MeshDrawingCamera>>,
 ) {
-    if state.0 == PluginState::UnInitialized && !query_canvas.is_empty() && !query_camera.is_empty()
+    if *state.get() == PluginState::UnInitialized
+        && !query_canvas.is_empty()
+        && !query_camera.is_empty()
     {
         info!("Plugin ready! Initializing...");
-        commands.insert_resource(NextState(PluginState::Initialized));
+        next_state.set(PluginState::Initialized);
     }
 }
