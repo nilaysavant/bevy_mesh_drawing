@@ -19,7 +19,7 @@ pub enum DrawingMode {
 
 impl Default for DrawingMode {
     fn default() -> Self {
-        Self::EditMode(EditModeState::default())
+        Self::CreateMode(CreateModeState::default())
     }
 }
 
