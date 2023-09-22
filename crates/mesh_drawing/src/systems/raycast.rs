@@ -1,5 +1,5 @@
 use bevy::{prelude::*, reflect::TypePath};
-use bevy_mod_picking::prelude::{Highlight, PickableBundle, RaycastPickCamera};
+use bevy_mod_picking::prelude::{Highlight, HighlightKind, PickableBundle, RaycastPickCamera};
 use bevy_mod_raycast::{
     prelude::{Raycast, RaycastMesh, RaycastMethod, RaycastPluginState, RaycastSource},
     IntersectionData,
@@ -58,10 +58,16 @@ pub fn enable_raycast_on_canvas_add(
     query: Query<(Entity, &Handle<StandardMaterial>), Added<Canvas>>,
 ) {
     for (entity, material) in query.iter() {
-        commands
-            .entity(entity)
-            .insert(PickableBundle::default())
-            .insert(RaycastMesh::<MeshDrawingRaycastSet>::default());
+        let highlight_mat_kind = HighlightKind::<StandardMaterial>::Fixed(material.clone());
+        commands.entity(entity).insert((
+            PickableBundle::default(),
+            RaycastMesh::<MeshDrawingRaycastSet>::default(),
+            Highlight::<StandardMaterial> {
+                hovered: Some(highlight_mat_kind.clone()),
+                pressed: Some(highlight_mat_kind.clone()),
+                selected: Some(highlight_mat_kind.clone()),
+            },
+        ));
     }
 }
 
@@ -74,7 +80,8 @@ pub fn disable_raycast_on_canvas_remove(
             .entity(entity)
             .remove::<PickableBundle>()
             .remove::<Highlight<StandardMaterial>>()
-            .remove::<RaycastMesh<MeshDrawingRaycastSet>>();
+            .remove::<RaycastMesh<MeshDrawingRaycastSet>>()
+            .remove::<Highlight<StandardMaterial>>();
     }
 }
 
