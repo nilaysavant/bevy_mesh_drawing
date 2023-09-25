@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy_mod_picking::DefaultPickingPlugins;
+use bevy_mod_picking::{debug::DebugPickingMode, DefaultPickingPlugins};
 use bevy_mod_raycast::{DefaultRaycastingPlugin, RaycastSystem};
 
 use crate::{
@@ -40,6 +40,8 @@ impl Plugin for MeshDrawingPlugin {
             // Plugin settings
             .insert_resource(PluginSettings::default())
             .add_plugins(DefaultPickingPlugins)
+            // disable the debug state...
+            .insert_resource(State::new(DebugPickingMode::Disabled))
             // Drawing state
             .insert_resource(DrawingState::default())
             // Configure events...
