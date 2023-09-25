@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy_mod_picking::prelude::{Highlight, PickableBundle};
+use bevy_mod_picking::prelude::{Highlight, HighlightKind, PickableBundle};
 
 /// Spawns a vertex indicator at the given vertex.
 pub fn spawn_vertex_indicators(
@@ -14,6 +14,7 @@ pub fn spawn_vertex_indicators(
         ..default()
     };
     let material_hdl = materials.add(material);
+    let highlight_mat_kind = HighlightKind::<StandardMaterial>::Fixed(material_hdl.clone());
     commands
         .spawn(MaterialMeshBundle {
             mesh: meshes.add(
@@ -27,7 +28,14 @@ pub fn spawn_vertex_indicators(
             transform: Transform::from_translation(Vec3::new(vertex.x, 0., vertex.y)),
             ..default()
         })
-        .insert(PickableBundle::default())
+        .insert((
+            PickableBundle::default(),
+            Highlight::<StandardMaterial> {
+                hovered: Some(highlight_mat_kind.clone()),
+                pressed: Some(highlight_mat_kind.clone()),
+                selected: Some(highlight_mat_kind.clone()),
+            },
+        ))
         .id()
 }
 
@@ -51,6 +59,7 @@ pub fn spawn_edge_indicator(
         base_color: Color::WHITE,
         ..default()
     });
+    let highlight_mat_kind = HighlightKind::<StandardMaterial>::Fixed(material.clone());
     // Spawn the edge
     commands
         .spawn(MaterialMeshBundle {
@@ -71,6 +80,13 @@ pub fn spawn_edge_indicator(
             },
             ..default()
         })
-        .insert(PickableBundle::default())
+        .insert((
+            PickableBundle::default(),
+            Highlight::<StandardMaterial> {
+                hovered: Some(highlight_mat_kind.clone()),
+                pressed: Some(highlight_mat_kind.clone()),
+                selected: Some(highlight_mat_kind.clone()),
+            },
+        ))
         .id()
 }
