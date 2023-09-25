@@ -21,7 +21,7 @@ pub fn add_picker_click_event_to_pickable(
     query: Query<Entity, Added<Pickable>>,
 ) {
     for entity in query.iter() {
-        info!("Add event to ent {:?}", entity);
+        // info!("Add event to ent {:?}", entity);
         commands.entity(entity).insert((
             RaycastPickTarget::default(),
             On::<Pointer<Click>>::send_event::<PickerClickEvent>(),
@@ -34,7 +34,7 @@ pub fn remove_picker_click_event_from_prev_pickable(
     mut query: RemovedComponents<Pickable>,
 ) {
     for entity in query.iter() {
-        info!("Remove event from ent {:?}", entity);
+        // info!("Remove event from ent {:?}", entity);
         let Some(mut ent_commands) = commands.get_entity(entity) else {
             continue;
         };
@@ -65,7 +65,11 @@ pub fn handle_picker_events(
         return;
     };
     for event in events.iter() {
-        let entity = event.0;
+        if event.target != event.listener() {
+            // skip propagated events...
+            continue;
+        }
+        let entity = event.target;
         info!("Clicked entity: {:?}", entity);
         if query_canvas.contains(entity) {
             // if canvas is clicked cleanup every thing
