@@ -11,11 +11,11 @@ pub fn handle_drawing_mode_transition(
     mut edit_mode_event: EventWriter<EditModeEvent>,
     mut create_mode_event: EventWriter<CreateModeEvent>,
 ) {
-    let MeshDrawingPluginSettings { key_binds, .. } = *settings;
-    if keyboard_input.just_pressed(key_binds.edit_mode_switch_key) {
+    let MeshDrawingPluginSettings { input_binds, .. } = *settings;
+    if keyboard_input.just_pressed(input_binds.edit_mode_switch_key) {
         info!("Change to edit mode...");
         create_mode_event.send(CreateModeEvent::EditModeSwitch);
-    } else if keyboard_input.just_pressed(key_binds.create_mode_switch_key) {
+    } else if keyboard_input.just_pressed(input_binds.create_mode_switch_key) {
         info!("Change to create mode...");
         edit_mode_event.send(EditModeEvent::CreateModeSwitch);
     }

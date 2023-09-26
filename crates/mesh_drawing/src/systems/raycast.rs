@@ -8,6 +8,7 @@ use bevy_mod_raycast::{
 use crate::{
     components::{Canvas, MeshDrawingCamera, VertexIndicator},
     events::{create_mode::CreateModeEvent, edit_mode::EditModeEvent},
+    prelude::MeshDrawingPluginSettings,
     utils::canvas_correction::get_canvas_corrected_translation,
 };
 
@@ -127,23 +128,23 @@ pub fn disable_raycast_on_camera_remove(
 /// Dispatch `CreateModeEvent` on user interactions along with intersections data.
 #[allow(clippy::too_many_arguments)]
 pub fn handle_raycast_intersections(
+    query_intersections: Query<&RaycastSource<MeshDrawingRaycastSet>>,
+    settings: Res<MeshDrawingPluginSettings>,
     mut create_mode_event: EventWriter<CreateModeEvent>,
     mouse_btn_input: Res<Input<MouseButton>>,
-    mut query_intersections: Query<&RaycastSource<MeshDrawingRaycastSet>>,
 ) {
-    if mouse_btn_input.just_pressed(MouseButton::Left) {
-        // Add new vertex
-
+    let MeshDrawingPluginSettings { input_binds, .. } = *settings;
+    if mouse_btn_input.just_pressed(input_binds.create_mode_add_vertex_btn) {
+        // Add new vertex...
         let Some((entity, intersection)) =
             get_first_intersection_data_for_source(&query_intersections)
         else {
             return;
         };
-
         let intersection_point = intersection.position();
         info!("intersection_point: {:?}", intersection_point);
         create_mode_event.send(CreateModeEvent::VertexAdd(intersection_point));
-    } else if mouse_btn_input.just_pressed(MouseButton::Right) {
+    } else if mouse_btn_input.just_pressed(input_binds.create_mode_close_and_extrude_mesh_btn) {
         create_mode_event.send(CreateModeEvent::PolygonCloseAndIntoMeshExtrude);
     }
 }

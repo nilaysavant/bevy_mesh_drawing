@@ -83,7 +83,7 @@ pub fn handle_picker_events(
         } else if query_vertex_indicators.contains(entity) {
             // if vertex indicator is clicked
             if plugin_settings.is_edit_mode_remove_vertex_enabled
-                && keyboard_input.pressed(plugin_settings.key_binds.edit_mode_remove_vertex_key)
+                && keyboard_input.pressed(plugin_settings.input_binds.edit_mode_remove_vertex_key)
             {
                 edit_mode_event.send(EditModeEvent::VertexRemove(entity));
             }
@@ -93,7 +93,7 @@ pub fn handle_picker_events(
             };
             // if edge indicator is clicked
             if plugin_settings.is_edit_mode_insert_vertex_enabled
-                && keyboard_input.pressed(plugin_settings.key_binds.edit_mode_insert_vertex_key)
+                && keyboard_input.pressed(plugin_settings.input_binds.edit_mode_insert_vertex_key)
             {
                 let Some((_, intersection)) =
                     get_first_intersection_data_for_source(&query_intersections)

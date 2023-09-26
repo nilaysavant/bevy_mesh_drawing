@@ -9,7 +9,7 @@
 
 use bevy::prelude::*;
 use bevy_mesh_drawing::prelude::{
-    Canvas, MeshDrawingCamera, MeshDrawingPlugin, MeshDrawingPluginKeyBinds,
+    Canvas, MeshDrawingCamera, MeshDrawingPlugin, MeshDrawingPluginInputBinds,
     MeshDrawingPluginSettings, PolygonalMesh,
 };
 
@@ -25,8 +25,8 @@ pub fn main() {
         .add_plugins(MeshDrawingPlugin)
         .insert_resource(MeshDrawingPluginSettings {
             extrude_size: 2.0, // config extrude height
-            // config key binds...
-            key_binds: MeshDrawingPluginKeyBinds {
+            // config input binds...
+            input_binds: MeshDrawingPluginInputBinds {
                 edit_mode_switch_key: KeyCode::Key1, // config key to switch to edit mode
                 create_mode_switch_key: KeyCode::Key2, // config key to switch to create mode
                 ..default()

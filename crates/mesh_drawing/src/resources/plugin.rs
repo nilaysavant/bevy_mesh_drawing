@@ -19,8 +19,8 @@ pub struct MeshDrawingPluginSettings {
     pub is_edit_mode_insert_vertex_enabled: bool,
     /// Enable remove vertex functionality in edit mode.
     pub is_edit_mode_remove_vertex_enabled: bool,
-    /// Key binds for the plugin.
-    pub key_binds: MeshDrawingPluginKeyBinds,
+    /// Input bindings for the plugin.
+    pub input_binds: MeshDrawingPluginInputBinds,
 }
 
 impl Default for MeshDrawingPluginSettings {
@@ -29,14 +29,14 @@ impl Default for MeshDrawingPluginSettings {
             extrude_size: 2.0,
             is_edit_mode_insert_vertex_enabled: true,
             is_edit_mode_remove_vertex_enabled: true,
-            key_binds: MeshDrawingPluginKeyBinds::default(),
+            input_binds: MeshDrawingPluginInputBinds::default(),
         }
     }
 }
 
-/// Key binds for the plugin.
+/// Input/Key binds for the plugin.
 #[derive(Debug, Clone, Copy, Resource)]
-pub struct MeshDrawingPluginKeyBinds {
+pub struct MeshDrawingPluginInputBinds {
     /// [`KeyCode`] used to switch to [`EditMode`](`super::DrawingMode::EditMode`)
     pub edit_mode_switch_key: KeyCode,
     /// [`KeyCode`] to switch to [`CreateMode`](`super::DrawingMode::CreateMode`)
@@ -49,15 +49,21 @@ pub struct MeshDrawingPluginKeyBinds {
     ///
     /// Vertex is inserted when this `KeyDown` + `LMB Click` on the desired Edge.
     pub edit_mode_insert_vertex_key: KeyCode,
+    /// [`MouseButton`] input used to _add vertex_ in [`CreateMode`](`super::DrawingMode::CreateMode`)
+    pub create_mode_add_vertex_btn: MouseButton,
+    /// [`MouseButton`] input used to _close polygon and create mesh_ in [`CreateMode`](`super::DrawingMode::CreateMode`)
+    pub create_mode_close_and_extrude_mesh_btn: MouseButton,
 }
 
-impl Default for MeshDrawingPluginKeyBinds {
+impl Default for MeshDrawingPluginInputBinds {
     fn default() -> Self {
         Self {
             edit_mode_switch_key: KeyCode::Key1,
             create_mode_switch_key: KeyCode::Key2,
             edit_mode_remove_vertex_key: KeyCode::AltLeft,
             edit_mode_insert_vertex_key: KeyCode::ControlLeft,
+            create_mode_add_vertex_btn: MouseButton::Left,
+            create_mode_close_and_extrude_mesh_btn: MouseButton::Right,
         }
     }
 }

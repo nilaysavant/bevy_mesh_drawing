@@ -12,5 +12,5 @@ pub mod prelude {
     // components...
     pub use crate::components::{Canvas, MeshDrawingCamera, PolygonalMesh};
     // settings...
-    pub use crate::resources::{MeshDrawingPluginKeyBinds, MeshDrawingPluginSettings};
+    pub use crate::resources::{MeshDrawingPluginInputBinds, MeshDrawingPluginSettings};
 }
