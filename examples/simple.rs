@@ -4,6 +4,8 @@
 //!
 //! `Key1`: For Edit Mode (Allows editing existing meshes created with this plugin)
 //! `Key2`: For Create Mode (Allows creating new meshes created with this plugin)
+//! `CtrlLeft` + `LMB` Click: [Edit Mode] Insert new vertex on edge
+//! `AltLeft` + `LMB` Click: [Edit Mode] Delete existing vertex.
 
 use bevy::prelude::*;
 use bevy_mesh_drawing::prelude::{Canvas, MeshDrawingCamera, MeshDrawingPlugin, PolygonalMesh};
