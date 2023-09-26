@@ -4,7 +4,7 @@ use bevy_mod_raycast::{DefaultRaycastingPlugin, RaycastSystem};
 
 use crate::{
     events::{create_mode::CreateModeEvent, edit_mode::EditModeEvent, picker::PickerClickEvent},
-    prelude::PluginSettings,
+    resources::MeshDrawingPluginSettings,
     resources::{DrawingMode, DrawingState, PluginState},
     systems::{
         cleanup::cleanup_all,
@@ -38,7 +38,7 @@ impl Plugin for MeshDrawingPlugin {
         app // plugin app
             // Set default/init plugin state
             // Plugin settings
-            .insert_resource(PluginSettings::default())
+            .insert_resource(MeshDrawingPluginSettings::default())
             .add_plugins(DefaultPickingPlugins)
             // disable the debug state...
             .insert_resource(State::new(DebugPickingMode::Disabled))

@@ -4,4 +4,4 @@ pub mod drawing;
 pub mod plugin;
 
 pub use drawing::{DrawingMode, DrawingState};
-pub use plugin::{PluginSettings, PluginState};
+pub use plugin::{MeshDrawingPluginKeyBinds, MeshDrawingPluginSettings, PluginState};

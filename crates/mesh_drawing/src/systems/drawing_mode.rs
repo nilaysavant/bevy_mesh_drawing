@@ -2,16 +2,16 @@ use bevy::prelude::*;
 
 use crate::{
     events::{create_mode::CreateModeEvent, edit_mode::EditModeEvent},
-    prelude::PluginSettings,
+    resources::MeshDrawingPluginSettings,
 };
 
 pub fn handle_drawing_mode_transition(
     keyboard_input: Res<Input<KeyCode>>,
-    settings: Res<PluginSettings>,
+    settings: Res<MeshDrawingPluginSettings>,
     mut edit_mode_event: EventWriter<EditModeEvent>,
     mut create_mode_event: EventWriter<CreateModeEvent>,
 ) {
-    let PluginSettings { key_binds, .. } = *settings;
+    let MeshDrawingPluginSettings { key_binds, .. } = *settings;
     if keyboard_input.just_pressed(key_binds.edit_mode_switch_key) {
         info!("Change to edit mode...");
         create_mode_event.send(CreateModeEvent::EditModeSwitch);

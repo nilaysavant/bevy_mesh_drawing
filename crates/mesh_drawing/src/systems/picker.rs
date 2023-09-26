@@ -8,7 +8,7 @@ use crate::{
         edit_mode::{EditModeEvent, InsertVertexData},
         picker::PickerClickEvent,
     },
-    resources::PluginSettings,
+    resources::MeshDrawingPluginSettings,
     systems::raycast::get_first_intersection_data_for_source,
     utils::canvas_correction::get_canvas_corrected_translation,
 };
@@ -50,7 +50,7 @@ pub fn handle_picker_events(
     keyboard_input: Res<Input<KeyCode>>,
     mut events: EventReader<PickerClickEvent>,
     mut edit_mode_event: EventWriter<EditModeEvent>,
-    plugin_settings: Res<PluginSettings>,
+    plugin_settings: Res<MeshDrawingPluginSettings>,
     query_canvas: Query<&Transform, With<Canvas>>,
     query_intersections: Query<&RaycastSource<MeshDrawingRaycastSet>>,
     query_mesh_with_indicators: Query<&PolygonalMeshIndicators, With<Pickable>>,

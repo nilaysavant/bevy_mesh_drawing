@@ -7,7 +7,10 @@ pub mod utils;
 
 /// Easy access to commonly used modules.
 pub mod prelude {
-    pub use crate::components::{Canvas, MeshDrawingCamera, PolygonalMesh};
+    // plugin...
     pub use crate::plugin::MeshDrawingPlugin;
-    pub use crate::resources::PluginSettings;
+    // components...
+    pub use crate::components::{Canvas, MeshDrawingCamera, PolygonalMesh};
+    // settings...
+    pub use crate::resources::{MeshDrawingPluginKeyBinds, MeshDrawingPluginSettings};
 }

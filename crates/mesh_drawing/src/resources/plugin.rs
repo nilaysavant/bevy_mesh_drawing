@@ -12,35 +12,35 @@ pub enum PluginState {
 
 /// Settings to configure the plugin.
 #[derive(Debug, Clone, Copy, Resource)]
-pub struct PluginSettings {
+pub struct MeshDrawingPluginSettings {
     /// Enable insert vertex functionality in edit mode.
     pub is_edit_mode_insert_vertex_enabled: bool,
     /// Enable remove vertex functionality in edit mode.
     pub is_edit_mode_remove_vertex_enabled: bool,
     /// Key binds for the plugin.
-    pub key_binds: PluginKeyBinds,
+    pub key_binds: MeshDrawingPluginKeyBinds,
 }
 
-impl Default for PluginSettings {
+impl Default for MeshDrawingPluginSettings {
     fn default() -> Self {
         Self {
             is_edit_mode_insert_vertex_enabled: true,
             is_edit_mode_remove_vertex_enabled: true,
-            key_binds: PluginKeyBinds::default(),
+            key_binds: MeshDrawingPluginKeyBinds::default(),
         }
     }
 }
 
 /// Key binds for the plugin.
 #[derive(Debug, Clone, Copy, Resource)]
-pub struct PluginKeyBinds {
+pub struct MeshDrawingPluginKeyBinds {
     /// [`KeyCode`] used to switch to [`EditMode`](`super::DrawingMode::EditMode`)
     pub edit_mode_switch_key: KeyCode,
     /// [`KeyCode`] to switch to [`CreateMode`](`super::DrawingMode::CreateMode`)
     pub create_mode_switch_key: KeyCode,
 }
 
-impl Default for PluginKeyBinds {
+impl Default for MeshDrawingPluginKeyBinds {
     fn default() -> Self {
         Self {
             edit_mode_switch_key: KeyCode::Key1,
