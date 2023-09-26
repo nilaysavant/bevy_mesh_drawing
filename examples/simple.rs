@@ -1,6 +1,6 @@
 //! Simple Example
 //!
-//! KeyBinds are currently hardcoded:
+//! Current defaults:
 //!
 //! `Key1`: For Edit Mode (Allows editing existing meshes created with this plugin)
 //! `Key2`: For Create Mode (Allows creating new meshes created with this plugin)
@@ -8,12 +8,24 @@
 //! `AltLeft` + `LMB` Click: [Edit Mode] Delete existing vertex.
 
 use bevy::prelude::*;
-use bevy_mesh_drawing::prelude::{Canvas, MeshDrawingCamera, MeshDrawingPlugin, PolygonalMesh};
+use bevy_mesh_drawing::prelude::{
+    Canvas, MeshDrawingCamera, MeshDrawingPlugin, MeshDrawingPluginKeyBinds,
+    MeshDrawingPluginSettings, PolygonalMesh,
+};
 
 pub fn main() {
     App::new() // App
         .add_plugins(DefaultPlugins)
         .add_plugins(MeshDrawingPlugin)
+        .insert_resource(MeshDrawingPluginSettings {
+            // config key binds...
+            key_binds: MeshDrawingPluginKeyBinds {
+                edit_mode_switch_key: KeyCode::E, // config key to switch to edit mode
+                create_mode_switch_key: KeyCode::R, // config key to switch to create mode
+                ..default()
+            },
+            ..default()
+        })
         .insert_resource(ClearColor(Color::rgb(0.0, 0.0, 0.0)))
         .add_systems(Startup, setup_window)
         .add_systems(Startup, setup)

@@ -38,6 +38,14 @@ pub struct MeshDrawingPluginKeyBinds {
     pub edit_mode_switch_key: KeyCode,
     /// [`KeyCode`] to switch to [`CreateMode`](`super::DrawingMode::CreateMode`)
     pub create_mode_switch_key: KeyCode,
+    /// [`KeyCode`] used to remove existing vertex.
+    ///
+    /// Remove happens on this `KeyDown` + `LMB Click` on the desired Vertex.
+    pub edit_mode_remove_vertex_key: KeyCode,
+    /// [`KeyCode`] used to insert new vertex on Edge.
+    ///
+    /// Vertex is inserted when this `KeyDown` + `LMB Click` on the desired Edge.
+    pub edit_mode_insert_vertex_key: KeyCode,
 }
 
 impl Default for MeshDrawingPluginKeyBinds {
@@ -45,6 +53,8 @@ impl Default for MeshDrawingPluginKeyBinds {
         Self {
             edit_mode_switch_key: KeyCode::Key1,
             create_mode_switch_key: KeyCode::Key2,
+            edit_mode_remove_vertex_key: KeyCode::AltLeft,
+            edit_mode_insert_vertex_key: KeyCode::ControlLeft,
         }
     }
 }
