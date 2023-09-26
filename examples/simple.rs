@@ -4,6 +4,8 @@
 //!
 //! `Key1`: For Edit Mode (Allows editing existing meshes created with this plugin)
 //! `Key2`: For Create Mode (Allows creating new meshes created with this plugin)
+//! `MouseButton::Left` Click on Canvas: [Create Mode] Used to create vertex.
+//! `MouseButton::Right` Click on Canvas: [Create Mode] Used to close the polygon and extrude it into a Mesh.
 //! `CtrlLeft` + `LMB` Click: [Edit Mode] Insert new vertex on edge
 //! `AltLeft` + `LMB` Click: [Edit Mode] Delete existing vertex.
 
