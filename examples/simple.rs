@@ -15,7 +15,13 @@ use bevy_mesh_drawing::prelude::{
 
 pub fn main() {
     App::new() // App
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "simple mesh drawing".to_string(),
+                ..default()
+            }),
+            ..default()
+        }))
         .add_plugins(MeshDrawingPlugin)
         .insert_resource(MeshDrawingPluginSettings {
             extrude_size: 2.0, // config extrude height
@@ -28,20 +34,9 @@ pub fn main() {
             ..default()
         })
         .insert_resource(ClearColor(Color::rgb(0.0, 0.0, 0.0)))
-        .add_systems(Startup, setup_window)
         .add_systems(Startup, setup)
         .add_systems(Update, handle_polygonal_mesh_add)
         .run();
-}
-
-/// # Setup Window
-///
-/// System updates and sets up the window attributes
-pub fn setup_window(mut windows: Query<&mut Window>) {
-    let Ok(mut window) = windows.get_single_mut() else {
-        return;
-    };
-    window.title = "simple mesh drawing".to_string();
 }
 
 /// Setup scene.
@@ -94,6 +89,7 @@ pub fn setup(
 
 pub fn handle_polygonal_mesh_add(query: Query<Entity, Added<PolygonalMesh>>) {
     for entity in query.iter() {
+        // Use the created mesh here...
         info!("Created polygonal mesh: {:?}", entity);
     }
 }
