@@ -20,8 +20,8 @@ pub fn main() {
         .insert_resource(MeshDrawingPluginSettings {
             // config key binds...
             key_binds: MeshDrawingPluginKeyBinds {
-                edit_mode_switch_key: KeyCode::E, // config key to switch to edit mode
-                create_mode_switch_key: KeyCode::R, // config key to switch to create mode
+                edit_mode_switch_key: KeyCode::Key1, // config key to switch to edit mode
+                create_mode_switch_key: KeyCode::Key2, // config key to switch to create mode
                 ..default()
             },
             ..default()
