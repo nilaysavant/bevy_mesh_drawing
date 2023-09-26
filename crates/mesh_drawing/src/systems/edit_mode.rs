@@ -10,7 +10,7 @@ use crate::{
     events::edit_mode::{EditModeEvent, InsertVertexData},
     resources::{
         drawing::{CreateModeState, EditModeState},
-        DrawingMode, DrawingState,
+        DrawingMode, DrawingState, MeshDrawingPluginSettings,
     },
     utils::indicators::{spawn_edge_indicator, spawn_vertex_indicators, EDGE_INDICATOR_WIDTH},
 };
@@ -22,6 +22,7 @@ pub fn handle_edit_mode_events(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut drawing_state: ResMut<DrawingState>,
+    settings: Res<MeshDrawingPluginSettings>,
     query_canvas: Query<(Entity, &Transform), With<Canvas>>,
     query_vertex_indicators: Query<(Entity, &VertexIndicator)>,
     query_edge_indicators: Query<(Entity, &EdgeIndicator)>,
@@ -209,7 +210,10 @@ pub fn handle_edit_mode_events(
                     }
                 }
                 // regenerate mesh and assign it to existing...
-                let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else {
+                let Some(new_mesh) = polygonal_mesh
+                    .mesh_polygon
+                    .extrude_to_bevy_mesh(settings.extrude_size)
+                else {
                     error!("Could not extrude mesh!");
                     return;
                 };
@@ -280,7 +284,10 @@ pub fn handle_edit_mode_events(
                     }
                 }
                 // regenerate mesh and assign it to existing...
-                let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else {
+                let Some(new_mesh) = polygonal_mesh
+                    .mesh_polygon
+                    .extrude_to_bevy_mesh(settings.extrude_size)
+                else {
                     error!("Could not extrude mesh!");
                     return;
                 };
@@ -327,6 +334,7 @@ pub fn handle_active_indicator(
         (With<Pickable>, Without<VertexIndicator>),
     >,
     mut query_edge_indicators: Query<(&mut Transform, &EdgeIndicator), Without<VertexIndicator>>,
+    settings: Res<MeshDrawingPluginSettings>,
     drawing_state: Res<DrawingState>,
     mut meshes: ResMut<Assets<Mesh>>,
 ) {
@@ -353,7 +361,10 @@ pub fn handle_active_indicator(
         // since y is vertical we use z...
         vertex.y = transform.translation.z;
         // regenerate mesh and assign it to existing...
-        let Some(new_mesh) = polygonal_mesh.mesh_polygon.extrude_to_bevy_mesh(2.0) else {
+        let Some(new_mesh) = polygonal_mesh
+            .mesh_polygon
+            .extrude_to_bevy_mesh(settings.extrude_size)
+        else {
             error!("Could not extrude mesh!");
             return;
         };

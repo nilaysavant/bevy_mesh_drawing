@@ -18,6 +18,7 @@ pub fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugins(MeshDrawingPlugin)
         .insert_resource(MeshDrawingPluginSettings {
+            extrude_size: 2.0, // config extrude height
             // config key binds...
             key_binds: MeshDrawingPluginKeyBinds {
                 edit_mode_switch_key: KeyCode::Key1, // config key to switch to edit mode

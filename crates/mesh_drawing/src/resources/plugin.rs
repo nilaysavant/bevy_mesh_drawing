@@ -13,6 +13,8 @@ pub enum PluginState {
 /// Settings to configure the plugin.
 #[derive(Debug, Clone, Copy, Resource)]
 pub struct MeshDrawingPluginSettings {
+    /// Size/height of the extruded [`Mesh`] from [`MeshPolygon`](mesh_geometry_utils::data_structures::MeshPolygon)
+    pub extrude_size: f32,
     /// Enable insert vertex functionality in edit mode.
     pub is_edit_mode_insert_vertex_enabled: bool,
     /// Enable remove vertex functionality in edit mode.
@@ -24,6 +26,7 @@ pub struct MeshDrawingPluginSettings {
 impl Default for MeshDrawingPluginSettings {
     fn default() -> Self {
         Self {
+            extrude_size: 2.0,
             is_edit_mode_insert_vertex_enabled: true,
             is_edit_mode_remove_vertex_enabled: true,
             key_binds: MeshDrawingPluginKeyBinds::default(),

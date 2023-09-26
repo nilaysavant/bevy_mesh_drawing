@@ -1,11 +1,11 @@
 use bevy::{math::Vec3Swizzles, prelude::*};
-use bevy_mod_picking::prelude::{Highlight, PickableBundle, HighlightKind};
+use bevy_mod_picking::prelude::{Highlight, HighlightKind, PickableBundle};
 use mesh_geometry_utils::data_structures::Edge;
 
 use crate::{
-    components::{Canvas, Cleanup, EdgeIndicator, VertexIndicator},
+    components::{Canvas, Cleanup, EdgeIndicator, PolygonalMesh, VertexIndicator},
     events::create_mode::CreateModeEvent,
-    prelude::PolygonalMesh,
+    resources::MeshDrawingPluginSettings,
     resources::{drawing::EditModeState, DrawingMode, DrawingState},
     utils::{
         canvas_correction::get_canvas_corrected_translation,
@@ -19,14 +19,15 @@ const MERGE_BELOW_DIST_SQUARED: f32 = 0.1;
 /// Handle create mode events.
 #[allow(clippy::too_many_arguments)]
 pub fn handle_create_mode_events(
-    mut events: EventReader<CreateModeEvent>,
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-    mut drawing_state: ResMut<DrawingState>,
     query_canvas: Query<(Entity, &Transform), With<Canvas>>,
     query_indicators: Query<Entity, (With<VertexIndicator>, Without<Cleanup>)>,
     query_edge_indicators: Query<Entity, (With<EdgeIndicator>, Without<Cleanup>)>,
+    mut events: EventReader<CreateModeEvent>,
+    settings: Res<MeshDrawingPluginSettings>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+    mut drawing_state: ResMut<DrawingState>,
 ) {
     let Ok((canvas_entity, canvas_transform)) = query_canvas.get_single() else {
         return;
@@ -47,6 +48,7 @@ pub fn handle_create_mode_events(
                         intersection_point.xz().distance_squared(*first_vert);
                     if dist_square_from_first_vert <= MERGE_BELOW_DIST_SQUARED {
                         if let Err(error) = close_polygon_and_extrude_mesh(
+                            settings.extrude_size,
                             create_mode_state,
                             &mut meshes,
                             &mut materials,
@@ -108,6 +110,7 @@ pub fn handle_create_mode_events(
             }
             CreateModeEvent::PolygonCloseAndIntoMeshExtrude => {
                 if let Err(error) = close_polygon_and_extrude_mesh(
+                    settings.extrude_size,
                     create_mode_state,
                     &mut meshes,
                     &mut materials,
@@ -138,6 +141,7 @@ pub fn handle_create_mode_events(
 
 #[allow(clippy::too_many_arguments)]
 fn close_polygon_and_extrude_mesh(
+    extrude_size: f32,
     create_mode_state: &mut crate::resources::drawing::CreateModeState,
     meshes: &mut ResMut<Assets<Mesh>>,
     materials: &mut ResMut<Assets<StandardMaterial>>,
@@ -157,7 +161,7 @@ fn close_polygon_and_extrude_mesh(
     // Create mesh from vertices
     let mut generated_mesh = create_mode_state
         .mesh_polygon
-        .extrude_to_bevy_mesh(2.0)
+        .extrude_to_bevy_mesh(extrude_size)
         .ok_or_else(|| "Vertices are less than 3!".to_string())?;
     // create comp for mesh spawning
     let mesh_handle = meshes.add(generated_mesh);
