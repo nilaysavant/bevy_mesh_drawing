@@ -1,3 +1,6 @@
+//! This code in file is mostly borrowed from [bevy-earcutr](https://github.com/frewsxcv/bevy-earcutr)
+//! With minor adjustments to make it work for our implementation.
+
 use std::convert::TryFrom;
 
 use bevy::{
