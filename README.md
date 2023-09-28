@@ -6,6 +6,11 @@
 
 ## Quick Start
 
+```toml
+[dependencies]
+bevy_mesh_drawing = { git = "https://github.com/nilaysavant/bevy_mesh_drawing", tag = "v0.2.0" }
+```
+
 ```rust
 /// Add canvas and camera...
 fn setup(mut commands: Commands) {
