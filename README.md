@@ -35,6 +35,7 @@ Checkout [`simple.rs`](./examples/simple.rs) in [examples](./examples/).
 
 | bevy | bevy_mesh_drawing |
 | ---- | ----------------- |
+| 0.11 | 0.2.0             |
 | 0.8  | 0.1.0             |
 
 [Bevy Engine Website]: https://bevyengine.org/
