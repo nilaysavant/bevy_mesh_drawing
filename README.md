@@ -20,6 +20,7 @@ fn setup(mut commands: Commands) {
         MeshDrawingCamera, // Camera Marker.
     ));
 }
+
 /// Meshes will be created with [`PolygonalMesh`]
 fn handle_polygonal_mesh_add(query: Query<Entity, Added<PolygonalMesh>>) {
     for entity in query.iter() {
