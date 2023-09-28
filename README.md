@@ -2,7 +2,7 @@
 
 **[Experimental ⚠️]** [Bevy][Bevy Engine Website] Plugin to draw polygonal meshes.
 
-![Simple Demo 1](./.readme/simple_demo_1.gif)
+![Simple Demo 1 | 800](./.readme/simple_demo_1.gif)
 
 ## Quick Start
 
