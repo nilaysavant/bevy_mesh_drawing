@@ -50,25 +50,22 @@ pub fn setup(
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     // Ground canvas
-    commands
-        .spawn(PbrBundle {
+    commands.spawn((
+        Name::new("Ground Canvas"),
+        PbrBundle {
             mesh: meshes.add(Mesh::from(shape::Plane {
                 size: 20.0,
                 ..default()
             })),
             material: materials.add(Color::rgba(0.3, 0.5, 0.3, 1.0).into()),
-            transform: Transform {
-                translation: Vec3::new(0., 0., 0.),
-                // rotation: Quat::from_rotation_x(std::f32::consts::FRAC_PI_2),
-                ..default()
-            },
             ..default()
-        })
-        .insert(Canvas)
-        .insert(Name::new("Ground Canvas"));
+        },
+        Canvas, // Mark this entity to allow drawing on it.
+    ));
     // light
-    commands
-        .spawn(PointLightBundle {
+    commands.spawn((
+        Name::new("Light"),
+        PointLightBundle {
             point_light: PointLight {
                 intensity: 1500.0,
                 shadows_enabled: true,
@@ -76,19 +73,21 @@ pub fn setup(
             },
             transform: Transform::from_xyz(4.0, 8.0, 4.0),
             ..default()
-        })
-        .insert(Name::new("Light"));
+        },
+    ));
     // camera
-    commands
-        .spawn(Camera3dBundle {
+    commands.spawn((
+        Name::new("Camera"),
+        Camera3dBundle {
             transform: Transform::from_translation(Vec3::splat(10.))
                 .looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
-        })
-        .insert(MeshDrawingCamera)
-        .insert(Name::new("Camera"));
+        },
+        MeshDrawingCamera, // Mark camera for use with drawing.
+    ));
 }
 
+/// Drawn meshes will be created with [`PolygonalMesh`] component.
 pub fn handle_polygonal_mesh_add(query: Query<Entity, Added<PolygonalMesh>>) {
     for entity in query.iter() {
         // Use the created mesh here...
