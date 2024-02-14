@@ -1,5 +1,4 @@
-use bevy::{prelude::Mesh, utils::HashSet};
-use delegate::delegate;
+use bevy::prelude::Mesh;
 
 use crate::mesh_builder::earcutr::generate_mesh_earcutr;
 
@@ -221,6 +220,7 @@ fn test_mesh_polygon_from_vec_vertices() {
 #[test]
 fn test_basic_edges() {
     use bevy::prelude::Vec2;
+    use bevy::utils::HashSet;
 
     let vec_of_vec2 = vec![
         Vec2::new(0., 0.),
@@ -250,6 +250,7 @@ fn test_basic_edges() {
 #[test]
 fn test_basic_edges_with_vertices_reversed() {
     use bevy::prelude::Vec2;
+    use bevy::utils::HashSet;
 
     let mut vec_of_vec2 = vec![
         Vec2::new(0., 0.),
@@ -283,6 +284,7 @@ fn test_basic_edges_with_vertices_reversed() {
 #[test]
 fn test_vertex_remove_b() {
     use bevy::prelude::Vec2;
+    use bevy::utils::HashSet;
 
     let vec_of_vec2 = vec![
         Vec2::new(0., 0.),
@@ -316,6 +318,7 @@ fn test_vertex_remove_b() {
 #[test]
 fn test_vertex_remove_b_reversed_vertices() {
     use bevy::prelude::Vec2;
+    use bevy::utils::HashSet;
 
     let mut vec_of_vec2 = vec![
         Vec2::new(0., 0.),
@@ -352,6 +355,7 @@ fn test_vertex_remove_b_reversed_vertices() {
 #[test]
 fn test_vertex_remove_d() {
     use bevy::prelude::Vec2;
+    use bevy::utils::HashSet;
 
     let vec_of_vec2 = vec![
         Vec2::new(0., 0.),
@@ -385,6 +389,7 @@ fn test_vertex_remove_d() {
 #[test]
 fn test_vertex_remove_d_reversed_vertices() {
     use bevy::prelude::Vec2;
+    use bevy::utils::HashSet;
 
     let mut vec_of_vec2 = vec![
         Vec2::new(0., 0.),
@@ -421,6 +426,7 @@ fn test_vertex_remove_d_reversed_vertices() {
 #[test]
 fn test_vertex_remove_a() {
     use bevy::prelude::Vec2;
+    use bevy::utils::HashSet;
 
     let vec_of_vec2 = vec![
         Vec2::new(0., 0.),
@@ -454,6 +460,7 @@ fn test_vertex_remove_a() {
 #[test]
 fn test_vertex_remove_a_reversed_vertices() {
     use bevy::prelude::Vec2;
+    use bevy::utils::HashSet;
 
     let mut vec_of_vec2 = vec![
         Vec2::new(0., 0.),

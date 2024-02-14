@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy_mod_picking::{debug::DebugPickingMode, DefaultPickingPlugins};
-use bevy_mod_raycast::{DefaultRaycastingPlugin, RaycastSystem};
+use bevy_mod_raycast::deferred::DeferredRaycastingPlugin;
+use bevy_mod_raycast::prelude::RaycastSystem;
 
 use crate::{
     events::{create_mode::CreateModeEvent, edit_mode::EditModeEvent, picker::PickerClickEvent},
@@ -48,8 +49,8 @@ impl Plugin for MeshDrawingPlugin {
             .add_event::<EditModeEvent>()
             .add_event::<CreateModeEvent>()
             // Ray-cast stuff...
-            .add_plugins(DefaultRaycastingPlugin::<MeshDrawingRaycastSet>::default())
-            .add_plugins(DefaultRaycastingPlugin::<VertexGrabbingRaycastSet>::default())
+            .add_plugins(DeferredRaycastingPlugin::<MeshDrawingRaycastSet>::default())
+            .add_plugins(DeferredRaycastingPlugin::<VertexGrabbingRaycastSet>::default())
             // add state
             .add_state::<PluginState>()
             // Setup updating ray-cast with cursor. Needs to run first.

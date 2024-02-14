@@ -4,7 +4,7 @@ use mesh_geometry_utils::data_structures::Edge;
 
 use crate::{
     components::{
-        Canvas, Cleanup, EdgeIndicator, GrabTransformable, PolygonalMesh, PolygonalMeshIndicators,
+        Cleanup, EdgeIndicator, GrabTransformable, PolygonalMesh, PolygonalMeshIndicators,
         VertexIndicator,
     },
     events::edit_mode::{EditModeEvent, InsertVertexData},
@@ -23,7 +23,6 @@ pub fn handle_edit_mode_events(
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut drawing_state: ResMut<DrawingState>,
     settings: Res<MeshDrawingPluginSettings>,
-    query_canvas: Query<(Entity, &Transform), With<Canvas>>,
     query_vertex_indicators: Query<(Entity, &VertexIndicator)>,
     query_edge_indicators: Query<(Entity, &EdgeIndicator)>,
     mut query_mesh_indicators_set: ParamSet<(
@@ -35,10 +34,7 @@ pub fn handle_edit_mode_events(
         (With<Pickable>, Without<PolygonalMeshIndicators>),
     >,
 ) {
-    let Ok((canvas_entity, canvas_transform)) = query_canvas.get_single() else {
-        return;
-    };
-    for event in events.iter() {
+    for event in events.read() {
         let DrawingMode::EditMode(edit_mode_state) = &mut drawing_state.mode else {
             return;
         };

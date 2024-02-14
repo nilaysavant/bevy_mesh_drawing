@@ -32,7 +32,7 @@ pub fn handle_create_mode_events(
     let Ok((canvas_entity, canvas_transform)) = query_canvas.get_single() else {
         return;
     };
-    for event in events.iter() {
+    for event in events.read() {
         let DrawingMode::CreateMode(create_mode_state) = &mut drawing_state.mode else {
             return;
         };
@@ -159,13 +159,13 @@ fn close_polygon_and_extrude_mesh(
         create_mode_state.mesh_polygon.reverse();
     }
     // Create mesh from vertices
-    let mut generated_mesh = create_mode_state
+    let generated_mesh = create_mode_state
         .mesh_polygon
         .extrude_to_bevy_mesh(extrude_size)
         .ok_or_else(|| "Vertices are less than 3!".to_string())?;
     // create comp for mesh spawning
     let mesh_handle = meshes.add(generated_mesh);
-    let mut polygonal_mesh = PolygonalMesh {
+    let polygonal_mesh = PolygonalMesh {
         mesh_polygon: create_mode_state.mesh_polygon.clone(),
         mesh_handle: Some(mesh_handle.clone()),
     };

@@ -28,12 +28,11 @@ pub fn handle_vertex_indicator_grab(
     let Ok(mut transform) = query_indicators.get_mut(active_vertex_indicator) else {
         return;
     };
-    for source in query_intersections.iter() {
-        let Some((_, intersection)) = get_first_intersection_data_for_source(&query_intersections)
-        else {
-            continue;
-        };
-        let position = get_canvas_corrected_translation(intersection.position(), canvas_transform);
-        transform.translation = position;
-    }
+
+    let Some((_, intersection)) = get_first_intersection_data_for_source(&query_intersections)
+    else {
+        return;
+    };
+    let position = get_canvas_corrected_translation(intersection.position(), canvas_transform);
+    transform.translation = position;
 }

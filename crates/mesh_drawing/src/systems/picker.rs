@@ -1,6 +1,6 @@
 use bevy::prelude::*;
-use bevy_mod_picking::prelude::{Click, On, Pickable, Pointer, RaycastPickTarget};
-use bevy_mod_raycast::RaycastSource;
+use bevy_mod_picking::prelude::{Click, On, Pickable, Pointer};
+use bevy_mod_raycast::prelude::RaycastSource;
 
 use crate::{
     components::{Canvas, EdgeIndicator, PolygonalMesh, PolygonalMeshIndicators, VertexIndicator},
@@ -23,7 +23,6 @@ pub fn add_picker_click_event_to_pickable(
     for entity in query.iter() {
         // info!("Add event to ent {:?}", entity);
         commands.entity(entity).insert((
-            RaycastPickTarget::default(),
             On::<Pointer<Click>>::send_event::<PickerClickEvent>(),
         ));
     }
@@ -33,13 +32,12 @@ pub fn remove_picker_click_event_from_prev_pickable(
     mut commands: Commands,
     mut query: RemovedComponents<Pickable>,
 ) {
-    for entity in query.iter() {
+    for entity in query.read() {
         // info!("Remove event from ent {:?}", entity);
         let Some(mut ent_commands) = commands.get_entity(entity) else {
             continue;
         };
         ent_commands
-            .remove::<RaycastPickTarget>()
             .remove::<On<Pointer<Click>>>();
     }
 }
@@ -64,7 +62,7 @@ pub fn handle_picker_events(
     let Ok(canvas_transform) = query_canvas.get_single() else {
         return;
     };
-    for event in events.iter() {
+    for event in events.read() {
         if event.target != event.listener() {
             // skip propagated events...
             continue;

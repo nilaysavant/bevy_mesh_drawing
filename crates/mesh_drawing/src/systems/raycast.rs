@@ -1,8 +1,7 @@
 use bevy::{prelude::*, reflect::TypePath};
-use bevy_mod_picking::prelude::{Highlight, HighlightKind, PickableBundle, RaycastPickCamera};
-use bevy_mod_raycast::{
-    prelude::{Raycast, RaycastMesh, RaycastMethod, RaycastPluginState, RaycastSource},
-    IntersectionData,
+use bevy_mod_picking::prelude::{Highlight, HighlightKind, PickableBundle};
+use bevy_mod_raycast::prelude::{
+    IntersectionData, RaycastMesh, RaycastMethod, RaycastPluginState, RaycastSource,
 };
 
 use crate::{
@@ -41,7 +40,7 @@ pub fn update_raycast_with_cursor(
     mut query_grab_sources: Query<&mut RaycastSource<VertexGrabbingRaycastSet>>,
 ) {
     // Grab the most recent cursor event if it exists:
-    let cursor_position = match cursor.iter().last() {
+    let cursor_position = match cursor.read().last() {
         Some(cursor_moved) => cursor_moved.position,
         None => return,
     };
@@ -76,7 +75,7 @@ pub fn disable_raycast_on_canvas_remove(
     mut commands: Commands,
     mut removed: RemovedComponents<Canvas>,
 ) {
-    for entity in removed.iter() {
+    for entity in removed.read() {
         commands
             .entity(entity)
             .remove::<PickableBundle>()
@@ -105,8 +104,7 @@ pub fn enable_raycast_on_camera_add(
         commands
             .entity(entity)
             .insert(RaycastSource::<MeshDrawingRaycastSet>::new())
-            .insert(RaycastSource::<VertexGrabbingRaycastSet>::new())
-            .insert(RaycastPickCamera::default());
+            .insert(RaycastSource::<VertexGrabbingRaycastSet>::new());
     }
 }
 
@@ -114,12 +112,11 @@ pub fn disable_raycast_on_camera_remove(
     mut commands: Commands,
     mut removed: RemovedComponents<MeshDrawingCamera>,
 ) {
-    for entity in removed.iter() {
+    for entity in removed.read() {
         commands
             .entity(entity)
             .remove::<RaycastSource<MeshDrawingRaycastSet>>()
-            .remove::<RaycastSource<VertexGrabbingRaycastSet>>()
-            .remove::<RaycastPickCamera>();
+            .remove::<RaycastSource<VertexGrabbingRaycastSet>>();
     }
 }
 
@@ -136,8 +133,7 @@ pub fn handle_raycast_intersections(
     let MeshDrawingPluginSettings { input_binds, .. } = *settings;
     if mouse_btn_input.just_pressed(input_binds.create_mode_add_vertex_btn) {
         // Add new vertex...
-        let Some((entity, intersection)) =
-            get_first_intersection_data_for_source(&query_intersections)
+        let Some((_, intersection)) = get_first_intersection_data_for_source(&query_intersections)
         else {
             return;
         };
@@ -152,14 +148,15 @@ pub fn handle_raycast_intersections(
 pub fn get_first_intersection_data_for_source<T: TypePath>(
     query_intersections: &Query<&RaycastSource<T>>,
 ) -> Option<(Entity, IntersectionData)> {
-    for source in query_intersections.iter() {
-        for (i, (entity, intersection_data)) in source.intersections().iter().enumerate() {
-            if i == 0 {
-                return Some((*entity, intersection_data.clone()));
-            }
-        }
-    }
-    None
+    let Some(source) = query_intersections.iter().next() else {
+        return None;
+    };
+
+    let Some((entity, intersection_data)) = source.intersections().first() else {
+        return None;
+    };
+
+    return Some((*entity, intersection_data.clone()));
 }
 
 pub fn get_multi_intersection_data_for_source<T: TypePath>(
@@ -167,11 +164,9 @@ pub fn get_multi_intersection_data_for_source<T: TypePath>(
 ) -> Vec<(Entity, IntersectionData)> {
     let mut intersections = vec![];
     for source in query_intersections.iter() {
-        for (i, (entity, intersection_data)) in source.intersections().iter().enumerate() {
-            if i == 0 {
-                intersections.push((*entity, intersection_data.clone()));
-            }
-        }
+        if let Some((entity, intersection_data)) = source.intersections().first() {
+            intersections.push((*entity, intersection_data.clone()));
+        };
     }
     intersections
 }

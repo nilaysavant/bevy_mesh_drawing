@@ -6,7 +6,6 @@ use crate::{
 };
 
 pub fn initialize_plugin_if_ready(
-    mut commands: Commands,
     state: Res<State<PluginState>>,
     mut next_state: ResMut<NextState<PluginState>>,
     query_canvas: Query<With<Canvas>>,
