@@ -1,8 +1,6 @@
 use bevy::{prelude::*, reflect::TypePath};
 use bevy_mod_picking::prelude::{Highlight, HighlightKind, PickableBundle};
-use bevy_mod_raycast::prelude::{
-    IntersectionData, RaycastMesh, RaycastMethod, RaycastPluginState, RaycastSource,
-};
+use bevy_mod_raycast::prelude::{IntersectionData, RaycastMesh, RaycastMethod, RaycastSource};
 
 use crate::{
     components::{Canvas, MeshDrawingCamera, VertexIndicator},
@@ -20,18 +18,6 @@ pub struct MeshDrawingRaycastSet;
 /// ray-cast set as a part of the same group.
 #[derive(TypePath)]
 pub struct VertexGrabbingRaycastSet;
-
-pub fn setup_raycast(mut commands: Commands) {
-    // Overwrite the default plugin state with one that enables the debug cursor. This line can be
-    // removed if the debug cursor isn't needed as the state is set to default values when the
-    // default plugin is added.
-    commands.insert_resource(
-        RaycastPluginState::<MeshDrawingRaycastSet>::default().with_debug_cursor(),
-    );
-    commands.insert_resource(
-        RaycastPluginState::<VertexGrabbingRaycastSet>::default().with_debug_cursor(),
-    );
-}
 
 // Update our `RaycastSource` with the current cursor position every frame.
 pub fn update_raycast_with_cursor(

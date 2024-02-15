@@ -22,8 +22,8 @@ use crate::{
             disable_raycast_on_camera_remove, disable_raycast_on_canvas_remove,
             enable_raycast_on_camera_add, enable_raycast_on_canvas_add,
             enable_raycast_on_vertex_indicators_add, handle_raycast_intersections,
-            handle_vertex_grabbing_raycast_intersections, setup_raycast,
-            update_raycast_with_cursor, MeshDrawingRaycastSet, VertexGrabbingRaycastSet,
+            handle_vertex_grabbing_raycast_intersections, update_raycast_with_cursor,
+            MeshDrawingRaycastSet, VertexGrabbingRaycastSet,
         },
         state::initialize_plugin_if_ready,
     },
@@ -69,7 +69,6 @@ impl Plugin for MeshDrawingPlugin {
             )
             .add_systems(Update, enable_raycast_on_camera_add)
             .add_systems(Update, disable_raycast_on_camera_remove)
-            .add_systems(Startup, setup_raycast)
             .add_systems(
                 Update,
                 handle_raycast_intersections
