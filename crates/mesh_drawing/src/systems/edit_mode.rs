@@ -289,7 +289,7 @@ pub fn handle_edit_mode_events(
                 };
                 if let Some(mesh_handle) = polygonal_mesh.mesh_handle.clone() {
                     if let Some(mesh) = meshes.get_mut(&mesh_handle) {
-                        info!("Generating new mesh...");
+                        debug!("Generating new mesh...");
                         mesh.clone_from(&new_mesh);
                     }
                 }
@@ -366,7 +366,7 @@ pub fn handle_active_indicator(
         };
         if let Some(mesh_handle) = polygonal_mesh.mesh_handle.clone() {
             if let Some(mesh) = meshes.get_mut(&mesh_handle) {
-                info!("Generating new mesh...");
+                debug!("Generating new mesh...");
                 mesh.clone_from(&new_mesh);
             }
         }
