@@ -14,3 +14,8 @@ pub mod prelude {
     // settings...
     pub use crate::resources::{MeshDrawingPluginInputBinds, MeshDrawingPluginSettings};
 }
+
+/// Re-exports of internal libraries.
+pub mod re_exports {
+    pub use bevy_mod_raycast;
+}
