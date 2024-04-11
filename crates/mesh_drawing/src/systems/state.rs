@@ -8,8 +8,8 @@ use crate::{
 pub fn initialize_plugin_if_ready(
     state: Res<State<PluginState>>,
     mut next_state: ResMut<NextState<PluginState>>,
-    query_canvas: Query<With<Canvas>>,
-    query_camera: Query<With<MeshDrawingCamera>>,
+    query_canvas: Query<(), With<Canvas>>,
+    query_camera: Query<(), With<MeshDrawingCamera>>,
 ) {
     if *state.get() == PluginState::UnInitialized
         && !query_canvas.is_empty()

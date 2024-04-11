@@ -386,7 +386,7 @@ pub fn handle_active_indicator(
                     translation: Vec3::new(mid_pt.x, 0., mid_pt.y),
                     rotation: Quat::from_rotation_y(edge_rot_angle_y),
                     scale: Vec3::new(
-                        edge_vec.length() / 2.,
+                        edge_vec.length(),
                         EDGE_INDICATOR_WIDTH,
                         EDGE_INDICATOR_WIDTH,
                     ),

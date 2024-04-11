@@ -50,7 +50,7 @@ impl Plugin for MeshDrawingPlugin {
             .add_plugins(DeferredRaycastingPlugin::<MeshDrawingRaycastSet>::default())
             .add_plugins(DeferredRaycastingPlugin::<VertexGrabbingRaycastSet>::default())
             // add state
-            .add_state::<PluginState>()
+            .init_state::<PluginState>()
             // Setup updating ray-cast with cursor. Needs to run first.
             .add_systems(
                 First,

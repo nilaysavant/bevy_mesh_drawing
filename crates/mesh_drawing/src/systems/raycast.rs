@@ -114,7 +114,7 @@ pub fn handle_raycast_intersections(
     query_intersections: Query<&RaycastSource<MeshDrawingRaycastSet>>,
     settings: Res<MeshDrawingPluginSettings>,
     mut create_mode_event: EventWriter<CreateModeEvent>,
-    mouse_btn_input: Res<Input<MouseButton>>,
+    mouse_btn_input: Res<ButtonInput<MouseButton>>,
 ) {
     let MeshDrawingPluginSettings { input_binds, .. } = *settings;
     if mouse_btn_input.just_pressed(input_binds.create_mode_add_vertex_btn) {
@@ -163,7 +163,7 @@ pub fn get_multi_intersection_data_for_source<T: TypePath>(
 #[allow(clippy::too_many_arguments, clippy::type_complexity)]
 pub fn handle_vertex_grabbing_raycast_intersections(
     mut edit_mode_event: EventWriter<EditModeEvent>,
-    mouse_btn_input: Res<Input<MouseButton>>,
+    mouse_btn_input: Res<ButtonInput<MouseButton>>,
     query_intersections: Query<&RaycastSource<VertexGrabbingRaycastSet>>,
     query_meshes: Query<
         (Entity, &Transform),

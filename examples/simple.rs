@@ -29,8 +29,8 @@ pub fn main() {
             extrude_size: 2.0, // config extrude height
             // config input binds...
             input_binds: MeshDrawingPluginInputBinds {
-                edit_mode_switch_key: KeyCode::Key1, // config key to switch to edit mode
-                create_mode_switch_key: KeyCode::Key2, // config key to switch to create mode
+                edit_mode_switch_key: KeyCode::Digit1, // config key to switch to edit mode
+                create_mode_switch_key: KeyCode::Digit2, // config key to switch to create mode
                 ..default()
             },
             ..default()
@@ -53,11 +53,8 @@ pub fn setup(
     commands.spawn((
         Name::new("Ground Canvas"),
         PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Plane {
-                size: 20.0,
-                ..default()
-            })),
-            material: materials.add(Color::rgba(0.3, 0.5, 0.3, 1.0).into()),
+            mesh: meshes.add(Plane3d::default().mesh().size(20.0, 20.0)),
+            material: materials.add(Color::rgba(0.3, 0.5, 0.3, 1.0)),
             ..default()
         },
         Canvas, // Mark this entity to allow drawing on it.
@@ -77,7 +74,7 @@ pub fn setup(
         Name::new("Light"),
         PointLightBundle {
             point_light: PointLight {
-                intensity: 1500.0,
+                intensity: 500000.0,
                 shadows_enabled: true,
                 ..default()
             },

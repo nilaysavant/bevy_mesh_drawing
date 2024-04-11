@@ -22,9 +22,9 @@ pub fn add_picker_click_event_to_pickable(
 ) {
     for entity in query.iter() {
         // info!("Add event to ent {:?}", entity);
-        commands.entity(entity).insert((
-            On::<Pointer<Click>>::send_event::<PickerClickEvent>(),
-        ));
+        commands
+            .entity(entity)
+            .insert((On::<Pointer<Click>>::send_event::<PickerClickEvent>(),));
     }
 }
 
@@ -37,15 +37,14 @@ pub fn remove_picker_click_event_from_prev_pickable(
         let Some(mut ent_commands) = commands.get_entity(entity) else {
             continue;
         };
-        ent_commands
-            .remove::<On<Pointer<Click>>>();
+        ent_commands.remove::<On<Pointer<Click>>>();
     }
 }
 
 /// Handle's the mod/entity picker events.
 #[allow(clippy::too_many_arguments)]
 pub fn handle_picker_events(
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
     mut events: EventReader<PickerClickEvent>,
     mut edit_mode_event: EventWriter<EditModeEvent>,
     plugin_settings: Res<MeshDrawingPluginSettings>,

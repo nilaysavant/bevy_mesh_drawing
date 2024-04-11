@@ -3,6 +3,7 @@
 
 use std::convert::TryFrom;
 
+use bevy::render::render_asset::RenderAssetUsages;
 use bevy::{
     prelude::Mesh,
     render::{mesh::Indices, render_resource::PrimitiveTopology},
@@ -110,8 +111,11 @@ pub fn build_mesh_from_earcutr(earcutr_result: EarcutrResult, z_index: f32) -> M
 
 fn build_mesh_from_bevy(triangle_indices: BevyIndices, vertices: BevyVertices) -> Mesh {
     let num_vertices = vertices.len();
-    let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-    mesh.set_indices(Some(Indices::U32(triangle_indices)));
+    let mut mesh = Mesh::new(
+        PrimitiveTopology::TriangleList,
+        RenderAssetUsages::default(),
+    );
+    mesh.insert_indices(Indices::U32(triangle_indices));
     mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, vertices);
 
     let normals = vec![[0.0, 0.0, 0.0]; num_vertices];

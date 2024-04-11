@@ -6,7 +6,7 @@ use crate::{
 };
 
 pub fn handle_drawing_mode_transition(
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
     settings: Res<MeshDrawingPluginSettings>,
     mut edit_mode_event: EventWriter<EditModeEvent>,
     mut create_mode_event: EventWriter<CreateModeEvent>,

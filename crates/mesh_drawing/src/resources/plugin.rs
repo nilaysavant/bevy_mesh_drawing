@@ -58,8 +58,8 @@ pub struct MeshDrawingPluginInputBinds {
 impl Default for MeshDrawingPluginInputBinds {
     fn default() -> Self {
         Self {
-            edit_mode_switch_key: KeyCode::Key1,
-            create_mode_switch_key: KeyCode::Key2,
+            edit_mode_switch_key: KeyCode::Digit1,
+            create_mode_switch_key: KeyCode::Digit2,
             edit_mode_remove_vertex_key: KeyCode::AltLeft,
             edit_mode_insert_vertex_key: KeyCode::ControlLeft,
             create_mode_add_vertex_btn: MouseButton::Left,

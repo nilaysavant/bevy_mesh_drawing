@@ -1,3 +1,4 @@
+use bevy::render::render_asset::RenderAssetUsages;
 use bevy::{
     prelude::*,
     render::{
@@ -90,8 +91,11 @@ impl MeshBuilder {
     }
 
     pub fn build(self) -> Mesh {
-        let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-        mesh.set_indices(Some(Indices::U32(self.indices)));
+        let mut mesh = Mesh::new(
+            PrimitiveTopology::TriangleList,
+            RenderAssetUsages::default(),
+        );
+        mesh.insert_indices(Indices::U32(self.indices));
 
         let mut position = Vec::new();
         let mut normal = Vec::new();

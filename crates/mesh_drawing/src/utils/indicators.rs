@@ -17,13 +17,7 @@ pub fn spawn_vertex_indicators(
     let highlight_mat_kind = HighlightKind::<StandardMaterial>::Fixed(material_hdl.clone());
     commands
         .spawn(MaterialMeshBundle {
-            mesh: meshes.add(
-                Mesh::try_from(shape::Icosphere {
-                    radius: 0.1,
-                    ..default()
-                })
-                .unwrap(),
-            ),
+            mesh: meshes.add(Sphere::new(0.1).mesh()),
             material: material_hdl.clone(),
             transform: Transform::from_translation(Vec3::new(vertex.x, 0., vertex.y)),
             ..default()
@@ -63,7 +57,7 @@ pub fn spawn_edge_indicator(
     // Spawn the edge
     commands
         .spawn(MaterialMeshBundle {
-            mesh: meshes.add(Mesh::from(shape::Box::default())),
+            mesh: meshes.add(Cuboid::default().mesh()),
             material: materials.add(StandardMaterial {
                 unlit: true,
                 base_color: Color::WHITE,
@@ -73,7 +67,7 @@ pub fn spawn_edge_indicator(
                 translation: Vec3::new(mid_pt.x, 0., mid_pt.y),
                 rotation: Quat::from_rotation_y(edge_rot_angle_y),
                 scale: Vec3::new(
-                    edge_vec.length() / 2.,
+                    edge_vec.length(),
                     EDGE_INDICATOR_WIDTH,
                     EDGE_INDICATOR_WIDTH,
                 ),
