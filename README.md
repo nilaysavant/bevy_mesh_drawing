@@ -8,7 +8,7 @@
 
 ```toml
 [dependencies]
-bevy_mesh_drawing = { git = "https://github.com/nilaysavant/bevy_mesh_drawing", tag = "v0.3.0" }
+bevy_mesh_drawing = { git = "https://github.com/nilaysavant/bevy_mesh_drawing", tag = "v0.4.0" }
 ```
 
 ```rust
@@ -40,6 +40,7 @@ Checkout [`simple.rs`](./examples/simple.rs) in [examples](./examples/).
 
 | bevy | bevy_mesh_drawing |
 | ---- | ----------------- |
+| 0.13 | 0.4.0             |
 | 0.12 | 0.3.0             |
 | 0.11 | 0.2.0             |
 | 0.8  | 0.1.0             |
