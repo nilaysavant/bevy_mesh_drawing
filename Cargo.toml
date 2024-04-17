@@ -14,7 +14,7 @@ readme = "README.md"
 mesh_drawing = { path = "crates/mesh_drawing" }
 
 [dev-dependencies]
-bevy = { version = "0.13.2" }
+bevy = { version = "0.13" }
 [workspace]
 members = ["crates/*"]
 
