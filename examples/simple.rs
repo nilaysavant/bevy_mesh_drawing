@@ -35,7 +35,7 @@ pub fn main() {
             },
             ..default()
         })
-        .insert_resource(ClearColor(Color::rgb(0.0, 0.0, 0.0)))
+        .insert_resource(ClearColor(Color::srgb(0.0, 0.0, 0.0)))
         .add_systems(Startup, setup)
         .add_systems(Update, handle_polygonal_mesh_add)
         .run();
@@ -54,7 +54,7 @@ pub fn setup(
         Name::new("Ground Canvas"),
         PbrBundle {
             mesh: meshes.add(Plane3d::default().mesh().size(20.0, 20.0)),
-            material: materials.add(Color::rgba(0.3, 0.5, 0.3, 1.0)),
+            material: materials.add(Color::srgba(0.3, 0.5, 0.3, 1.0)),
             ..default()
         },
         Canvas, // Mark this entity to allow drawing on it.

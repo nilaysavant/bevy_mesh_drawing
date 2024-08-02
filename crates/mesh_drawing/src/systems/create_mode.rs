@@ -169,7 +169,7 @@ fn close_polygon_and_extrude_mesh(
         mesh_polygon: create_mode_state.mesh_polygon.clone(),
         mesh_handle: Some(mesh_handle.clone()),
     };
-    let manual_mesh_material = materials.add(Color::rgba(0.8, 0.7, 0.6, 1.0));
+    let manual_mesh_material = materials.add(Color::srgba(0.8, 0.7, 0.6, 1.0));
     let highlight_mat_kind = HighlightKind::<StandardMaterial>::Fixed(manual_mesh_material.clone());
     let new_mesh_entity = commands
         .spawn(MaterialMeshBundle {

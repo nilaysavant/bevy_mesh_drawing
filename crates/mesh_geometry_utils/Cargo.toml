@@ -10,10 +10,10 @@ bevy_prototype_lyon = ["dep:bevy_prototype_lyon"] # unused atm
 
 [dependencies]
 delegate = "0.9.0"
-bevy = { version = "0.13", default-features = false, features = [
+bevy = { version = "0.14", default-features = false, features = [
     "bevy_render",
 ] }
-bevy_prototype_lyon = { version = "0.11", optional = true }
+bevy_prototype_lyon = { version = "0.12", optional = true }
 geo = "0.26"
 earcutr = "0.4"
 serial_int = "2.0.0"
